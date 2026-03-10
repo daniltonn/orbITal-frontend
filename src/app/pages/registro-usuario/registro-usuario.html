@@ -1,1 +1,101 @@
-<p>registro-usuario works!</p>
+<!-- 
+  Registro de Usuario — Pantalla de creación de nuevos usuarios
+  Solo accesible para administradores del Imperio
+  Usa navbar compartida y formulario con validación
+-->
+<div class="page-wrapper"></div>
+<!-- Navbar -->
+<div class="navbar">
+  <div class="nav-logo">Orb<span>IT</span>al</div>
+  <div class="nav-links">
+    <a class="nav-link" routerLink="/planetas">Planetas</a>
+    <a class="nav-link" routerLink="/equipos">Equipos</a>
+    <a class="nav-link" routerLink="/misiones">Misiones</a>
+    <a class="nav-link active">Admin</a>
+  </div>
+  <div class="nav-user">
+    <div class="avatar">FR</div>
+    <span>Freezer · Emperador</span>
+  </div>
+</div>
+
+<div class="content">
+  <div class="page-header">
+    <h1>Registrar Nuevo Usuario</h1>
+    <p>Solo accesible para administradores del Imperio · Los campos marcados con * son obligatorios</p>
+  </div>
+
+  <div class="card" style="max-width:700px;">
+
+    <!-- Mensaje de éxito — solo se muestra si el registro fue exitoso -->
+    <div class="alert alert-success" *ngIf="exitoso">
+      ✓ Usuario registrado exitosamente en el sistema galáctico.
+    </div>
+
+    <!-- Mensaje de error -->
+    <div class="alert alert-error" *ngIf="errorMessage">
+      ⚠ {{ errorMessage }}
+    </div>
+
+    <!-- Fila 1: Nombre y email -->
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Nombre completo *</label>
+        <input class="form-input" placeholder="Ej: Dodoria" [(ngModel)]="nombre">
+      </div>
+      <div class="form-group">
+        <label class="form-label">ID de acceso *</label>
+        <input class="form-input" placeholder="usuario@freezer.empire" [(ngModel)]="email">
+      </div>
+    </div>
+
+    <!-- Fila 2: Rol y nivel de poder -->
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Rol en el Imperio *</label>
+        <select class="form-select" [(ngModel)]="rol">
+        <option value="">Seleccionar rol...</option>
+        <option>Comandante de Flota</option>
+        <option>Analista de Recursos</option>
+        <option>Emperador</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Nivel de poder</label>
+        <input class="form-input" placeholder="Ej: 22,000" [(ngModel)]="nivelPoder">
+      </div>
+    </div>
+
+    <!-- Fila 3: Contraseñas -->
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Contraseña inicial *</label>
+        <input class="form-input" type="password" placeholder="••••••••" [(ngModel)]="password">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Confirmar contraseña *</label>
+        <input class="form-input" type="password" placeholder="••••••••" [(ngModel)]="passwordConfirm">
+      </div>
+    </div>
+
+    <!-- Permisos (solo visual por ahora) -->
+    <div class="form-group">
+      <label class="form-label">Permisos del sistema</label>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;">
+        <span class="badge badge-info">Ver Planetas</span>
+        <span class="badge badge-info">Ver Misiones</span>
+        <span class="badge badge-purple">Registrar Planetas</span>
+        <span class="badge badge-purple">Asignar Misiones</span>
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div style="display:flex;gap:12px;margin-top:8px;">
+      <button class="btn btn-primary" (click)="registrar()" [disabled]="cargando">
+        {{ cargando ? 'Registrando...' : 'Registrar Usuario' }}
+      </button>
+      <button class="btn btn-secondary" (click)="cancelar()">Cancelar</button>
+    </div>
+
+  </div>
+</div>

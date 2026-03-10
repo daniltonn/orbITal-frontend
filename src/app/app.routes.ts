@@ -7,6 +7,7 @@
 import { Routes } from '@angular/router';
 // Se importa cada pantalla que tenga una ruta asignada
 import { Login } from './pages/login/login';
+import { RegistroUsuario } from './pages/registro-usuario/registro-usuario';
 
 export const routes: Routes = [
   // Si el usuario entra a la raíz "/" lo redirige automáticamente a "/login"
@@ -15,6 +16,9 @@ export const routes: Routes = [
   // Ruta del login — muestra la pantalla Login cuando la URL es /login
   { path: 'login', component: Login },
 
+  // Ruta de registro de usuario (solo admin)
+  { path: 'registrar-usuario', component: RegistroUsuario },
+  
   // 🔧 PENDIENTE: agregar las demás rutas del MVP a medida que se implementen
   // { path: 'planetas', component: Listar },
   // { path: 'planetas/registrar', component: Registrar },

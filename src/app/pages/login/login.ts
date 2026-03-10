@@ -33,7 +33,8 @@ export class Login {
   // Cuando el equipo de backend entregue el endpoint de autenticación, esto se reemplaza por:
   // this.authService.login(this.email, this.password).subscribe(respuesta => { ... })
   private usuariosMock = [
-    { email: 'zarbon@freezer.empire', password: '1234', rol: 'Comandante', nombre: 'Zarbon' },
+    { email: 'zarbon@freezer.empire', password: '1234', rol: 'Comandante de Flota', nombre: 'Zarbon' },
+    { email: 'dodoria@freezer.empire', password: '1234', rol: 'Comandante de Flota', nombre: 'Dodoria' },
     { email: 'freezer@freezer.empire', password: '1234', rol: 'Emperador', nombre: 'Freezer' },
   ];
 

@@ -16,8 +16,18 @@
 /* Borde del cuadro del login */
 .login-card {
   border-color: rgba(255, 255, 255, 0.08);
-}
 
+
+  /* Freezer semitransparente detrás del formulario */
+&::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('https://i.pinimg.com/originals/96/21/30/96213086102f62c9114f240b493ec4a7.png') center 10% / cover no-repeat;
+  opacity: 0.1;
+  pointer-events: none;
+}
+}
 /* Línea decorativa al final del formulario */
 .login-divider {
   text-align: center;
