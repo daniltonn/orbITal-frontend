@@ -1,1 +1,148 @@
-<p>registrar works!</p>
+<!--
+  Registrar Planeta — HU1
+  Como Comandante de Flota quiero registrar un planeta
+  en el catálogo planetario para tener información estratégica
+-->
+<div class="page-wrapper">
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="nav-logo">Orb<span>IT</span>al</div>
+    <div class="nav-links">
+      <a class="nav-link active">Planetas</a>
+      <a class="nav-link" routerLink="/equipos">Equipos</a>
+      <a class="nav-link" routerLink="/misiones">Misiones</a>
+      <a class="nav-link">Admin</a>
+    </div>
+    <div class="nav-user">
+      <div class="avatar">ZB</div>
+      <span>Zarbon · Comandante</span>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="page-header">
+      <h1>Registrar Planeta</h1>
+      <p>Añadir nuevo planeta al catálogo galáctico del Imperio</p>
+    </div>
+
+    <!-- Mensaje de éxito -->
+    <div class="alert alert-success" *ngIf="exitoso">
+      ✓ Planeta registrado exitosamente en el catálogo galáctico.
+    </div>
+
+    <!-- Mensaje de error -->
+    <div class="alert alert-error" *ngIf="errorMessage">
+      ⚠ {{ errorMessage }}
+    </div>
+
+    <div class="grid-2">
+
+      <!-- Card izquierda: Datos Generales -->
+      <div class="card">
+        <div class="section-title" style="margin-bottom:20px;">Datos Generales</div>
+
+        <!-- Nombre del planeta -->
+        <div class="form-group">
+          <label class="form-label">Nombre del planeta *</label>
+          <input class="form-input" placeholder="Ej: Namek" [(ngModel)]="nombre">
+        </div>
+
+        <!-- Coordenadas -->
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Coordenadas X *</label>
+            <input class="form-input" placeholder="-4.820" [(ngModel)]="coordenadasX">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Coordenadas Y *</label>
+            <input class="form-input" placeholder="11.340" [(ngModel)]="coordenadasY">
+          </div>
+        </div>
+
+        <!-- Atmósfera y nivel tecnológico -->
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Atmósfera</label>
+            <select class="form-select" [(ngModel)]="atmosfera">
+              <option>Nitrógeno-Oxígeno</option>
+              <option>Metano</option>
+              <option>Amoníaco</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nivel tecnológico</label>
+            <select class="form-select" [(ngModel)]="nivelTecnologico">
+              <option>Primitivo</option>
+              <option>Medieval</option>
+              <option>Avanzado</option>
+              <option>Interestelar</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Población -->
+        <div class="form-group">
+          <label class="form-label">Población estimada</label>
+          <input class="form-input" placeholder="Ej: 130,000,000" [(ngModel)]="poblacion">
+        </div>
+      </div>
+
+      <!-- Card derecha: Evaluación de Recursos -->
+      <div class="card">
+        <div class="section-title" style="margin-bottom:20px;">Evaluación de Recursos</div>
+
+        <!-- Recursos primarios -->
+        <div class="form-group">
+          <label class="form-label">Recursos primarios</label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;margin-bottom:12px;">
+            <span class="tag" *ngFor="let r of recursos">{{ r }}</span>
+            <span class="badge badge-warn" style="cursor:pointer;" (click)="agregarRecurso()">+ Añadir</span>
+          </div>
+          <!-- Campo para escribir nuevo recurso -->
+          <input class="form-input" *ngIf="mostrarInputRecurso"
+            placeholder="Ej: Zirconio"
+            [(ngModel)]="nuevoRecurso"
+            (keyup.enter)="confirmarRecurso()"
+          >
+        </div>
+
+        <!-- Dificultad de conquista -->
+        <div class="form-group">
+          <label class="form-label">Nivel de dificultad de conquista</label>
+          <select class="form-select" [(ngModel)]="dificultad">
+            <option>Bajo</option>
+            <option>Medio</option>
+            <option>Alto</option>
+            <option>Extremo</option>
+          </select>
+        </div>
+
+        <!-- Valor estimado -->
+        <div class="form-group">
+          <label class="form-label">Valor estimado (créditos galácticos)</label>
+          <input class="form-input" placeholder="Ej: 4,500,000" [(ngModel)]="valorEstimado">
+        </div>
+
+        <!-- Estado inicial -->
+        <div class="form-group">
+          <label class="form-label">Estado inicial</label>
+          <select class="form-select" [(ngModel)]="estado">
+            <option>Identificado</option>
+            <option>En evaluación</option>
+            <option>Listo para asignar</option>
+          </select>
+        </div>
+
+        <!-- Botones -->
+        <div style="display:flex;gap:12px;margin-top:8px;">
+          <button class="btn btn-primary" (click)="registrar()" [disabled]="cargando">
+            {{ cargando ? 'Registrando...' : 'Registrar Planeta' }}
+          </button>
+          <button class="btn btn-secondary" (click)="limpiar()">Limpiar</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

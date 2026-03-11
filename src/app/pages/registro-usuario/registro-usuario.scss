@@ -1,17 +1,7 @@
-/* 
-  Estilos específicos de Registro de Usuario
-  Los estilos globales están en src/styles.scss
-*/
+/* Estilos específicos de Registrar Planeta */
+/* Los estilos globales están en src/styles.scss */
 
-/* Fondo de la pantalla */
-
-
-:host {
-  display: block;
+.page-wrapper {
   min-height: 100vh;
   background: var(--deep);
-}
-
-.content {
-  padding: 32px 28px;
 }
