@@ -1,1 +1,68 @@
-/* You can add global styles to this file, and also import other style files */
+/* ──────────────────────────────────────────
+   OrbITal – Global Styles
+   Pega esto en src/styles.scss
+────────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:wght@300;400;500;600&display=swap');
+
+/* ── Variables globales ── */
+:root {
+  --void:    #04050f;
+  --panel:   #0b1225;
+  --panel2:  #111c35;
+  --border:  rgba(0, 201, 255, 0.15);
+  --accent:  #00c9ff;
+  --accent2: #7b5cf0;
+  --success: #00e5a0;
+  --danger:  #ff4560;
+  --warn:    #ffb020;
+  --text:    #c8d8f0;
+  --text-dim:#5a7090;
+  --sidebar-w: 240px;
+}
+
+/* ── Reset ── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background: var(--void);
+  color: var(--text);
+  font-family: 'Exo 2', sans-serif;
+  min-height: 100vh;
+}
+
+/* ── Fondo galáctico ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(123, 92, 240, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 80%, rgba(0, 201, 255, 0.06) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0, 201, 255, 0.2); border-radius: 3px; }
+
+/* ── router-outlet ── */
+router-outlet + * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Fuente Orbitron disponible globalmente ── */
+.font-orbital {
+  font-family: 'Orbitron', monospace;
+}

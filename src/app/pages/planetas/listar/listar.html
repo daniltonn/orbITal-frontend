@@ -1,1 +1,201 @@
-<p>listar works!</p>
+<div class="page-wrap">
+
+  <!-- STAT CARDS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Total Planetas</div>
+      <div class="stat-value">{{ planetas.length }}</div>
+      <div class="stat-sub">En catálogo activo</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Disponibles</div>
+      <div class="stat-value success">{{ contarEstado('disponible') }}</div>
+      <div class="stat-sub">Listos para misión</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">En Misión</div>
+      <div class="stat-value warn">{{ contarEstado('en_mision') }}</div>
+      <div class="stat-sub">Proceso activo</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Peligrosos</div>
+      <div class="stat-value danger">{{ contarEstado('peligroso') }}</div>
+      <div class="stat-sub">Requieren élite</div>
+    </div>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input
+        class="search-box"
+        type="text"
+        placeholder="Buscar por nombre, sector o recursos..."
+        [(ngModel)]="filtroTexto"
+      >
+    </div>
+    <select class="filter-select" [(ngModel)]="filtroEstado">
+      <option value="">Todos los estados</option>
+      <option value="disponible">Disponible</option>
+      <option value="en_mision">En Misión</option>
+      <option value="vendido">Vendido</option>
+      <option value="evaluacion">En Evaluación</option>
+      <option value="peligroso">Peligroso</option>
+    </select>
+    <select class="filter-select" [(ngModel)]="filtroSector">
+      <option value="">Todos los sectores</option>
+      <option *ngFor="let s of sectoresUnicos" [value]="s">{{ s }}</option>
+    </select>
+    <button class="btn btn-ghost">⬇ Exportar</button>
+    <button class="btn btn-primary" (click)="abrirModal()">＋ Nuevo Planeta</button>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrap">
+    <div class="table-header">
+      <div class="table-header-title">Registro Planetario</div>
+      <div class="table-count">Mostrando {{ planetasFiltrados.length }} de {{ planetas.length }} planetas</div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Planeta</th>
+          <th>Sector / Coord.</th>
+          <th>Niv. Tec.</th>
+          <th>Recursos</th>
+          <th>Poder Nativo</th>
+          <th>Valor Est.</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of planetasFiltrados">
+          <td>
+            <div class="planet-name">
+              <div class="planet-dot" [style.background]="p.color"></div>
+              {{ p.nombre }}
+            </div>
+          </td>
+          <td><span class="mono">{{ p.sector }} · {{ p.coordenadas }}</span></td>
+          <td><span class="mono">{{ toRoman(p.nivelTec) }}</span></td>
+          <td class="recursos-cell">{{ p.recursos }}</td>
+          <td>
+            <div class="power-bar-wrap">
+              <div class="power-bar">
+                <div
+                  class="power-fill"
+                  [style.width.%]="poderPorcentaje(p.poderNativo)"
+                  [style.background]="p.poderNativo > 80000 ? 'linear-gradient(90deg,#ff4560,#ffb020)' : 'linear-gradient(90deg,#7b5cf0,#00c9ff)'"
+                ></div>
+              </div>
+              <span class="mono">{{ formatPoder(p.poderNativo) }}</span>
+            </div>
+          </td>
+          <td>
+            <span class="mono valor">{{ formatValor(p.valorEstimado) }}</span>
+          </td>
+          <td>
+            <span class="badge" [ngClass]="badgeEstado(p.estado)">
+              {{ labelEstado(p.estado) }}
+            </span>
+          </td>
+          <td>
+            <div class="actions-cell">
+              <button class="btn btn-sm btn-ghost">👁 Ver</button>
+              <button
+                class="btn btn-sm btn-primary"
+                [disabled]="p.estado === 'en_mision' || p.estado === 'vendido'"
+                (click)="asignarMision(p)"
+              >
+                🚀 Asignar
+              </button>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Empty state -->
+        <tr *ngIf="planetasFiltrados.length === 0">
+          <td colspan="8" class="empty-state">
+            <div>🪐</div>
+            <div>No se encontraron planetas con ese filtro</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pagination">
+      <div class="page-info">{{ planetasFiltrados.length }} registros encontrados</div>
+      <div class="page-btns">
+        <button class="page-btn">‹</button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn">›</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── MODAL ── -->
+<div class="modal-overlay" [class.open]="modalAbierto" (click)="$event.target === $event.currentTarget && cerrarModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🪐 Nuevo Registro Planetario</div>
+      <button class="modal-close" (click)="cerrarModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Nombre del Planeta *</label>
+          <input class="form-input" type="text" placeholder="Ej: Planeta X-99" [(ngModel)]="nuevoPlaneta.nombre">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Sector</label>
+          <input class="form-input" type="text" placeholder="SEC-0A" [(ngModel)]="nuevoPlaneta.sector">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Coordenadas</label>
+          <input class="form-input" type="text" placeholder="0000-X" [(ngModel)]="nuevoPlaneta.coordenadas">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nivel Tecnológico</label>
+          <select class="form-select" [(ngModel)]="nuevoPlaneta.nivelTec">
+            <option value="1">I — Primitivo</option>
+            <option value="2">II — Básico</option>
+            <option value="3">III — Intermedio</option>
+            <option value="4">IV — Avanzado</option>
+            <option value="5">V — Superior</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Recursos Identificados</label>
+        <input class="form-input" type="text" placeholder="Ej: Minerales Z, agua..." [(ngModel)]="nuevoPlaneta.recursos">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Poder Nativo Estimado</label>
+          <input class="form-input" type="number" placeholder="0" [(ngModel)]="nuevoPlaneta.poderNativo">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Valor Estimado (₹)</label>
+          <input class="form-input" type="number" placeholder="0" [(ngModel)]="nuevoPlaneta.valorEstimado">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" (click)="cerrarModal()">Cancelar</button>
+      <button class="btn btn-primary" (click)="registrarPlaneta()">Registrar Planeta</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── TOAST ── -->
+<div class="toast" [class.show]="toastVisible">
+  <span>✅</span>
+  <span>{{ toastMensaje }}</span>
+</div>

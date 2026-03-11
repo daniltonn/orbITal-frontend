@@ -1,1 +1,265 @@
-<p>registrar works!</p>
+<div class="page-wrap">
+  <div class="two-col">
+
+    <!-- ══ COLUMNA IZQUIERDA: FORMULARIO ══ -->
+    <div>
+
+      <!-- Datos del equipo -->
+      <div class="form-card">
+        <div class="form-card-header">
+          <span class="header-icon">⚔️</span>
+          <h3>Datos del Equipo</h3>
+        </div>
+        <div class="form-body">
+
+          <div class="form-group">
+            <label class="form-label">Nombre del Equipo *</label>
+            <input
+              class="form-input"
+              type="text"
+              placeholder="Ej: Escuadrón Vegeta Alpha"
+              [(ngModel)]="nuevoEquipo.nombre"
+            >
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Tipo de Unidad *</label>
+              <select class="form-select" [(ngModel)]="nuevoEquipo.tipo">
+                <option value="">— Seleccionar —</option>
+                <option value="sayayin">Sayayin</option>
+                <option value="soldado">Soldado de Freezer</option>
+                <option value="mercenario">Mercenario</option>
+                <option value="elite">Élite Imperial</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Rango Mínimo *</label>
+              <select class="form-select" [(ngModel)]="nuevoEquipo.rango">
+                <option value="D">D — Principiante</option>
+                <option value="C">C — Estándar</option>
+                <option value="B">B — Avanzado</option>
+                <option value="A">A — Élite</option>
+                <option value="S">S — Legendario</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Poder de Combate Total</label>
+              <div class="power-input-wrap">
+                <input class="form-input" type="number" placeholder="0" [(ngModel)]="nuevoEquipo.poderTotal">
+                <span class="power-unit">pts</span>
+              </div>
+              <div class="form-hint">Se calculará automáticamente con los miembros</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Capacidad Máx. Misiones</label>
+              <input class="form-input" type="number" placeholder="1" min="1" max="10" [(ngModel)]="nuevoEquipo.maxMisiones">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Especialización</label>
+            <div class="checkbox-group">
+              <label class="checkbox-item">
+                <input type="checkbox" [(ngModel)]="especializaciones.exterminio"> Exterminio
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" [(ngModel)]="especializaciones.captura"> Captura
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" [(ngModel)]="especializaciones.reconocimiento"> Reconocimiento
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" [(ngModel)]="especializaciones.extraccion"> Extracción de recursos
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Observaciones</label>
+            <textarea
+              class="form-textarea"
+              placeholder="Notas adicionales sobre el equipo..."
+              [(ngModel)]="nuevoEquipo.observaciones"
+            ></textarea>
+          </div>
+
+        </div>
+      </div><!-- /form-card datos -->
+
+      <!-- Miembros del equipo -->
+      <div class="form-card mt-20">
+        <div class="form-card-header">
+          <span class="header-icon">👥</span>
+          <h3>Miembros del Equipo</h3>
+          <span class="member-count">{{ miembrosActuales.length }} miembros</span>
+        </div>
+
+        <div class="members-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Raza</th>
+                <th>Poder</th>
+                <th>Estado</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let m of miembrosActuales; let i = index">
+                <td class="member-name">{{ m.nombre }}</td>
+                <td>
+                  <span class="badge badge-sm" [ngClass]="badgeTipo(m.raza.toLowerCase())">
+                    {{ m.raza }}
+                  </span>
+                </td>
+                <td>
+                  <span class="mono warn">{{ formatPoder(m.poder) }}</span>
+                </td>
+                <td>
+                  <span class="badge badge-sm" [ngClass]="badgeEstadoMiembro(m.estado)">
+                    {{ m.estado === 'activo' ? '● Activo' : m.estado === 'en_mision' ? '● Misión' : '◌ Reposo' }}
+                  </span>
+                </td>
+                <td>
+                  <button class="btn-remove" (click)="eliminarMiembro(i)">✕</button>
+                </td>
+              </tr>
+
+              <!-- Empty -->
+              <tr *ngIf="miembrosActuales.length === 0">
+                <td colspan="5" class="empty-members">Sin miembros aún. Añade combatientes abajo.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Add member row -->
+          <div class="add-member-row">
+            <input
+              class="form-input"
+              type="text"
+              placeholder="Nombre del combatiente..."
+              [(ngModel)]="nuevoMiembro.nombre"
+              (keyup.enter)="agregarMiembro()"
+            >
+            <select class="form-select" [(ngModel)]="nuevoMiembro.raza">
+              <option>Sayayin</option>
+              <option>Soldado</option>
+              <option>Mercenario</option>
+              <option>Élite</option>
+              <option>Namekiano</option>
+            </select>
+            <input
+              class="form-input poder-input"
+              type="number"
+              placeholder="Poder"
+              [(ngModel)]="nuevoMiembro.poder"
+            >
+            <button class="btn btn-primary btn-sm" (click)="agregarMiembro()">＋ Añadir</button>
+          </div>
+        </div>
+
+        <!-- Footer botones -->
+        <div class="form-footer">
+          <button class="btn btn-ghost" (click)="resetForm()">↺ Limpiar</button>
+          <button class="btn btn-primary" (click)="registrarEquipo()">
+            ✓ Registrar Equipo
+          </button>
+        </div>
+
+      </div><!-- /form-card miembros -->
+
+    </div><!-- /col izq -->
+
+    <!-- ══ COLUMNA DERECHA: EQUIPOS REGISTRADOS ══ -->
+    <div>
+
+      <div class="list-header">
+        <div>
+          <div class="list-title">Equipos Registrados</div>
+          <div class="list-sub">{{ equipos.length }} equipos en el imperio</div>
+        </div>
+      </div>
+
+      <!-- Filtros -->
+      <div class="toolbar">
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input class="search-box" type="text" placeholder="Buscar equipo..." [(ngModel)]="filtroEquipos">
+        </div>
+        <select class="filter-select" [(ngModel)]="filtroTipo">
+          <option value="">Todos</option>
+          <option value="sayayin">Sayayin</option>
+          <option value="soldado">Soldado</option>
+          <option value="mercenario">Mercenario</option>
+          <option value="elite">Élite</option>
+        </select>
+      </div>
+
+      <!-- Lista de equipos -->
+      <div class="equipos-list">
+        <div class="equipo-card" *ngFor="let e of equiposFiltrados">
+          <div class="equipo-avatar">{{ e.emoji }}</div>
+          <div class="equipo-info">
+            <div class="equipo-name">{{ e.nombre }}</div>
+            <div class="equipo-meta">
+              <span class="badge badge-sm" [ngClass]="badgeTipo(e.tipo)">{{ labelTipo(e.tipo) }}</span>
+              &nbsp;·&nbsp; Rango {{ e.rango }}
+            </div>
+            <div class="equipo-specs" *ngIf="e.especializaciones.length">
+              <span *ngFor="let s of e.especializaciones" class="spec-tag">{{ s }}</span>
+            </div>
+          </div>
+          <div class="equipo-stats">
+            <div class="equipo-power">{{ formatPoder(e.poderTotal) }}</div>
+            <div class="equipo-members">{{ e.miembros.length || '—' }} miembros</div>
+            <span class="badge badge-sm mt-4" [ngClass]="badgeEstadoEquipo(e.estado)">
+              {{ labelEstadoEquipo(e.estado) }}
+            </span>
+          </div>
+        </div>
+
+        <div class="empty-equipos" *ngIf="equiposFiltrados.length === 0">
+          ⚔️ No se encontraron equipos
+        </div>
+      </div>
+
+      <!-- Disponibilidad summary -->
+      <div class="disponibilidad-card">
+        <div class="disp-title">Resumen de Disponibilidad</div>
+        <div class="disp-row">
+          <div class="disp-label">Disponibles</div>
+          <div class="disp-value success">{{ disponibles }}</div>
+          <div class="disp-bar">
+            <div class="disp-fill success-fill" [style.width.%]="(disponibles / equipos.length) * 100"></div>
+          </div>
+        </div>
+        <div class="disp-row">
+          <div class="disp-label">En Misión</div>
+          <div class="disp-value warn">{{ enMision }}</div>
+          <div class="disp-bar">
+            <div class="disp-fill warn-fill" [style.width.%]="(enMision / equipos.length) * 100"></div>
+          </div>
+        </div>
+        <div class="disp-row">
+          <div class="disp-label">En Reposo</div>
+          <div class="disp-value dim">{{ enReposo }}</div>
+          <div class="disp-bar">
+            <div class="disp-fill dim-fill" [style.width.%]="(enReposo / equipos.length) * 100"></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /col der -->
+  </div><!-- /two-col -->
+</div>
+
+<!-- ── TOAST ── -->
+<div class="toast" [class.show]="toastVisible">
+  <span>✅</span>
+  <span>{{ toastMensaje }}</span>
+</div>
