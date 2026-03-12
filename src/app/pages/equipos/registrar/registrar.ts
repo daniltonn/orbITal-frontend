@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { Sidebar } from '../../../shared/sidebar/sidebar';
 
 export interface Miembro {
   nombre: string;
@@ -26,7 +28,7 @@ export interface Equipo {
 @Component({
   selector: 'app-registrar-equipo',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule, Sidebar],
   templateUrl: './registrar.html',
   styleUrl: './registrar.scss'
 })

@@ -1,8 +1,16 @@
+// ──────────────────────────────────────────────────────────
+// Listar Planetas — HU2
+// Como Comandante de Flota quiero consultar los planetas
+// registrados para identificar posibles objetivos de misión
+// ──────────────────────────────────────────────────────────
+
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { Sidebar } from '../../../shared/sidebar/sidebar';
 
+// Interfaz que define la estructura de un planeta
 export interface Planeta {
   id: number;
   nombre: string;
@@ -19,26 +27,32 @@ export interface Planeta {
 @Component({
   selector: 'app-listar',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule, Sidebar],
   templateUrl: './listar.html',
   styleUrl: './listar.scss'
 })
 export class ListarComponent implements OnInit {
 
+  // Variables de filtrado
   filtroTexto = '';
   filtroEstado = '';
   filtroSector = '';
 
+  // Control del modal de nuevo planeta
   modalAbierto = false;
+
+  // Control del toast de confirmación
   toastVisible = false;
   toastMensaje = '';
   private toastTimer: any;
 
+  // Datos del formulario del modal
   nuevoPlaneta = {
     nombre: '', sector: '', coordenadas: '',
     nivelTec: '1', poderNativo: 0, recursos: '', valorEstimado: 0
   };
 
+  // 🔧 MOCK: lista de planetas simulada hasta que Fernando entregue el endpoint
   planetas: Planeta[] = [
     { id:1, nombre:'Namek',      sector:'SEC-7G', coordenadas:'0423-N', nivelTec:4, recursos:'Esferas del dragón, agua',       poderNativo:72000,  valorEstimado:4500000,  estado:'disponible', color:'#00e5a0' },
     { id:2, nombre:'Vegeta',     sector:'SEC-3A', coordenadas:'0011-V', nivelTec:7, recursos:'Minerales Z, esclavos élite',    poderNativo:120000, valorEstimado:8200000,  estado:'peligroso',  color:'#ffb020' },
@@ -54,6 +68,7 @@ export class ListarComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  // Filtra planetas según texto, estado y sector seleccionados
   get planetasFiltrados(): Planeta[] {
     return this.planetas.filter(p => {
       const matchTexto  = !this.filtroTexto  || p.nombre.toLowerCase().includes(this.filtroTexto.toLowerCase()) || p.recursos.toLowerCase().includes(this.filtroTexto.toLowerCase()) || p.sector.toLowerCase().includes(this.filtroTexto.toLowerCase());
@@ -63,14 +78,17 @@ export class ListarComponent implements OnInit {
     });
   }
 
+  // Retorna lista de sectores sin duplicados para el filtro
   get sectoresUnicos(): string[] {
     return [...new Set(this.planetas.map(p => p.sector))];
   }
 
+  // Cuenta cuántos planetas tienen un estado específico
   contarEstado(estado: string): number {
     return this.planetas.filter(p => p.estado === estado).length;
   }
 
+  // Convierte número a romano para mostrar nivel tecnológico
   toRoman(n: number): string {
     const map: Record<number, string> = {
       1:'I', 2:'II', 3:'III', 4:'IV', 5:'V',
@@ -79,11 +97,13 @@ export class ListarComponent implements OnInit {
     return map[n] ?? String(n);
   }
 
+  // Calcula el porcentaje de poder relativo al máximo de la lista
   poderPorcentaje(poder: number): number {
     const max = Math.max(...this.planetas.map(p => p.poderNativo));
     return Math.round((poder / max) * 100);
   }
 
+  // Retorna la clase CSS del badge según el estado del planeta
   badgeEstado(estado: string): string {
     const map: Record<string, string> = {
       disponible: 'badge-disponible',
@@ -95,6 +115,7 @@ export class ListarComponent implements OnInit {
     return map[estado] ?? '';
   }
 
+  // Retorna el texto visible del badge según el estado
   labelEstado(estado: string): string {
     const map: Record<string, string> = {
       disponible: '● Disponible',
@@ -109,6 +130,7 @@ export class ListarComponent implements OnInit {
   abrirModal()  { this.modalAbierto = true; }
   cerrarModal() { this.modalAbierto = false; }
 
+  // Agrega un nuevo planeta al catálogo (mock)
   registrarPlaneta() {
     if (!this.nuevoPlaneta.nombre) return;
     const nuevo: Planeta = {
@@ -129,10 +151,12 @@ export class ListarComponent implements OnInit {
     this.nuevoPlaneta = { nombre:'', sector:'', coordenadas:'', nivelTec:'1', poderNativo:0, recursos:'', valorEstimado:0 };
   }
 
+  // Navega a la pantalla de asignar misión con el planeta seleccionado
   asignarMision(planeta: Planeta) {
-    this.router.navigate(['/app/misiones/asignar'], { queryParams: { planetaId: planeta.id } });
+    this.router.navigate(['/misiones/asignar'], { queryParams: { planetaId: planeta.id } });
   }
 
+  // Muestra un toast de confirmación por 3.2 segundos
   mostrarToast(msg: string) {
     this.toastMensaje = msg;
     this.toastVisible = true;
@@ -140,12 +164,14 @@ export class ListarComponent implements OnInit {
     this.toastTimer = setTimeout(() => this.toastVisible = false, 3200);
   }
 
+  // Formatea el valor estimado en M o k
   formatValor(v: number): string {
     if (v >= 1_000_000) return (v / 1_000_000).toFixed(1) + 'M ₹';
     if (v >= 1_000)     return (v / 1_000).toFixed(0) + 'k ₹';
     return v + ' ₹';
   }
 
+  // Formatea el poder nativo en k
   formatPoder(v: number): string {
     if (v >= 1_000) return (v / 1_000).toFixed(0) + 'k';
     return String(v);
