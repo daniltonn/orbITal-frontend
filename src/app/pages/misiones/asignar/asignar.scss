@@ -1,0 +1,95 @@
+// ──────────────────────────────────────────────────────────
+// Asignar Misión — HU6
+// Estilos específicos de esta pantalla
+// Los estilos globales vienen de src/styles.scss
+// ──────────────────────────────────────────────────────────
+
+// ── Tarjeta resumen del planeta seleccionado ──
+.planeta-resumen {
+  background: var(--deep);
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.planeta-resumen-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 8px;
+}
+
+.planeta-nombre {
+  font-family: 'Orbitron', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.planeta-sector {
+  font-size: 11px;
+  color: var(--text2);
+  margin-top: 2px;
+}
+
+.planeta-stats {
+  display: flex;
+  gap: 14px;
+  font-size: 12px;
+}
+
+.poder-req { color: var(--accent); font-weight: 600; }
+.valor-est { color: var(--success); font-weight: 600; }
+
+// ── Tarjetas de equipos disponibles ──
+.equipo-item {
+  border-radius: 6px;
+  padding: 13px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.equipo-item.seleccionado {
+  background: rgba(0, 201, 255, 0.06);
+  border: 1px solid var(--accent);
+}
+
+.equipo-item.disponible {
+  background: var(--deep);
+  border: 1px solid var(--border);
+}
+
+.equipo-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.equipo-item-nombre {
+  font-weight: 600;
+  color: var(--white);
+}
+
+.equipo-item-stats {
+  display: flex;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--text2);
+}
+
+.equipo-item-stats .valor-accent { color: var(--accent); }
+.equipo-item-stats .valor-texto  { color: var(--text); }
+.equipo-item-stats .valor-success { color: var(--success); }
+
+// ── Botones de acción ──
+.acciones-mision {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+// Botón principal
+.label-dim { color: var(--text2); }
+.section-title { margin-bottom: 14px; }

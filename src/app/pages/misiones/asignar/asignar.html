@@ -33,20 +33,26 @@
 
       <!-- Panel izquierdo: datos del planeta y configuración -->
       <div class="card">
-        <div class="section-title" style="margin-bottom:14px">Planeta Seleccionado</div>
+        <div class="section-title">Planeta Seleccionado</div>
 
-        <!-- Tarjeta resumen del planeta -->
-        <div style="background:var(--deep);border:1px solid var(--border2);border-radius:6px;padding:14px;margin-bottom:14px">
-          <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px">
+        <!-- Resumen del planeta seleccionado -->
+        <div class="planeta-resumen">
+          <div class="planeta-resumen-header">
             <div>
-              <div style="font-family:'Orbitron',monospace;font-size:14px;font-weight:700;color:var(--white)">🪐 Namek</div>
-              <div style="font-size:11px;color:var(--text2);margin-top:2px">Sector 7G · -4.82, 11.34</div>
+              <div class="planeta-nombre">🪐 Namek</div>
+              <div class="planeta-sector">Sector 7G · -4.82, 11.34</div>
             </div>
             <span class="badge badge-warn">Dificultad Media</span>
           </div>
-          <div style="display:flex;gap:14px;font-size:12px">
-            <div><span style="color:var(--text2)">Poder req:</span> <span style="color:var(--accent);font-weight:600">75,000+</span></div>
-            <div><span style="color:var(--text2)">Valor:</span> <span style="color:var(--success);font-weight:600">4,500,000 cr</span></div>
+          <div class="planeta-stats">
+            <div>
+              <span class="label-dim">Poder req:</span>
+              <span class="poder-req">75,000+</span>
+            </div>
+            <div>
+              <span class="label-dim">Valor:</span>
+              <span class="valor-est">4,500,000 cr</span>
+            </div>
           </div>
         </div>
 
@@ -71,42 +77,40 @@
 
       <!-- Panel derecho: selección de equipo -->
       <div class="card">
-        <div class="section-title" style="margin-bottom:12px">Equipos Disponibles (poder ≥ 75,000)</div>
+        <div class="section-title">Equipos Disponibles (poder ≥ 75,000)</div>
 
-        <div style="display:flex;flex-direction:column;gap:10px">
-
-          <!-- Equipo seleccionado -->
-          <div style="background:rgba(0,201,255,0.06);border:1px solid var(--accent);border-radius:6px;padding:13px;cursor:pointer">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
-              <span style="font-weight:600;color:var(--white)">Escuadrón Ginyu</span>
-              <span class="badge badge-success">Seleccionado</span>
-            </div>
-            <div style="display:flex;gap:12px;font-size:11px">
-              <span style="color:var(--text2)">Poder: <span style="color:var(--accent)">200,000</span></span>
-              <span style="color:var(--text2)">Misiones: <span style="color:var(--text)">23</span></span>
-              <span style="color:var(--text2)">Rep: <span style="color:var(--success)">★ 4.9</span></span>
-            </div>
+        <!-- Equipo seleccionado -->
+        <div class="equipo-item seleccionado">
+          <div class="equipo-item-header">
+            <span class="equipo-item-nombre">Escuadrón Ginyu</span>
+            <span class="badge badge-success">Seleccionado</span>
           </div>
+          <div class="equipo-item-stats">
+            <span>Poder: <span class="valor-accent">200,000</span></span>
+            <span>Misiones: <span class="valor-texto">23</span></span>
+            <span>Rep: <span class="valor-success">★ 4.9</span></span>
+          </div>
+        </div>
 
-          <!-- Equipo disponible -->
-          <div style="background:var(--deep);border:1px solid var(--border);border-radius:6px;padding:13px;cursor:pointer">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
-              <span style="font-weight:600;color:var(--white)">Fuerza Saiyajin A</span>
-              <span class="badge badge-info">Disponible</span>
-            </div>
-            <div style="display:flex;gap:12px;font-size:11px">
-              <span style="color:var(--text2)">Poder: <span style="color:var(--accent)">90,000</span></span>
-              <span style="color:var(--text2)">Misiones: <span style="color:var(--text)">41</span></span>
-              <span style="color:var(--text2)">Rep: <span style="color:var(--success)">★ 4.7</span></span>
-            </div>
+        <!-- Equipo disponible -->
+        <div class="equipo-item disponible">
+          <div class="equipo-item-header">
+            <span class="equipo-item-nombre">Fuerza Saiyajin A</span>
+            <span class="badge badge-info">Disponible</span>
+          </div>
+          <div class="equipo-item-stats">
+            <span>Poder: <span class="valor-accent">90,000</span></span>
+            <span>Misiones: <span class="valor-texto">41</span></span>
+            <span>Rep: <span class="valor-success">★ 4.7</span></span>
           </div>
         </div>
 
         <!-- Botones de acción -->
-        <div style="display:flex;gap:10px;margin-top:16px">
+        <div class="acciones-mision">
           <button class="btn btn-primary" routerLink="/misiones/estado">Confirmar Asignación →</button>
           <button class="btn btn-secondary" routerLink="/planetas">← Volver</button>
         </div>
+
       </div>
 
     </div>

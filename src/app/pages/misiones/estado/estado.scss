@@ -1,48 +1,111 @@
-/* Copia esto dentro de estado-mision.scss */
-.progress-bar {
-  height: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-  overflow: hidden;
-  margin-top: 10px;
+// ──────────────────────────────────────────────────────────
+// Estado de Misión — HU8
+// Estilos específicos de esta pantalla
+// Los estilos globales vienen de src/styles.scss
+// ──────────────────────────────────────────────────────────
+
+// ── Encabezado de la misión ──
+.mision-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
 }
 
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #00ffff, #7b5cf0) !important;
-  box-shadow: 0 0 10px #00ffff;
+.mision-header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
-.timeline {
-  position: relative;
-  padding-left: 30px;
-  &::before {
-    content: '';
-    position: absolute;
-    left: 7px;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: rgba(255, 255, 255, 0.1);
-  }
+.mision-titulo { margin: 0; }
+.mision-subtitulo { margin: 0; }
+
+// ── Tarjetas de estadísticas ──
+.stats-mision {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
 }
 
-.timeline-item {
-  position: relative;
-  padding-bottom: 20px;
-  &.active .timeline-dot {
-    background: #00ffff;
-    box-shadow: 0 0 10px #00ffff;
-  }
+.stat-label-mision {
+  font-size: 10px;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-bottom: 10px;
 }
 
-.timeline-dot {
-  position: absolute;
-  left: -30px;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: #1a1f35;
-  border: 2px solid #00ffff;
-  z-index: 2;
+.stat-valor-mision {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
+
+.stat-valor-mision.blanco  { color: var(--white); }
+.stat-valor-mision.warn    { color: var(--warn); }
+.stat-valor-mision.accent  { color: var(--accent); }
+.stat-valor-mision.danger  { color: var(--danger); }
+
+.stat-sub-mision {
+  font-size: 10px;
+  color: var(--text3);
+}
+
+// ── Panel derecho ──
+.panel-derecho {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+// ── Equipo asignado ──
+.equipo-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.equipo-info { flex: 1; }
+
+.equipo-nombre {
+  font-weight: bold;
+  color: var(--white);
+}
+
+.equipo-detalle {
+  font-size: 11px;
+  color: var(--text3);
+}
+
+.equipo-reporte {
+  margin-top: 15px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 5px;
+  font-size: 11px;
+  font-style: italic;
+  color: var(--text2);
+}
+
+// ── Acciones ──
+.acciones-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-completar {
+  background: var(--success) !important;
+  border-color: var(--success) !important;
+}
+
+.btn-cancelar {
+  color: var(--danger) !important;
+  border-color: var(--danger) !important;
+}
+
+// ── Timeline ──
+.timeline-titulo { font-weight: bold; color: var(--white); }
+.timeline-subtitulo { font-size: 11px; color: var(--text3); }
+.timeline-pendiente { font-weight: bold; color: var(--text3); }
