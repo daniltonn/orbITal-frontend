@@ -13,28 +13,29 @@ import { AsignarMision } from './pages/misiones/asignar/asignar';
 import { EstadoMision } from './pages/misiones/estado/estado';
 
 export const routes: Routes = [
-  // Ruta raíz: redirige automáticamente al login
+
+  // Ruta raíz
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
-  // Login (HU15)
+  // Login
   { path: 'login', component: Login },
 
   // Registro de usuario
   { path: 'registrar-usuario', component: RegistroUsuario },
 
-  // ⚠ planetas/registrar ANTES de planetas para que Angular no lo confunda
+  // Registrar planeta
   { path: 'planetas/registrar', component: RegistrarPlaneta },
 
-  // Listar planetas (HU2)
+  // Listar planetas
   { path: 'planetas', component: ListarComponent },
 
-  // Registrar equipo (HU4)
+  // Registrar equipo
   { path: 'equipos/registrar', component: RegistrarEquipoComponent },
 
-  // Asignar misión (HU6)
+  // Asignar misión
   { path: 'misiones/asignar', component: AsignarMision },
 
-  // Estado de misión (HU8)
+  // Estado misión
   { path: 'misiones/estado', component: EstadoMision },
 
   // Ruta comodín
