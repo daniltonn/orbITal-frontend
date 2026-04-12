@@ -1,15 +1,9 @@
-// ──────────────────────────────────────────────────────────
-// Registro de Usuario — HU0
-// Como Administrador del Imperio quiero registrar nuevos
-// usuarios para otorgarles acceso al sistema galáctico
-// Solo accesible para administradores del Imperio
-// ──────────────────────────────────────────────────────────
-
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Sidebar } from '../../shared/sidebar/sidebar';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-registro-usuario',
@@ -20,57 +14,75 @@ import { Sidebar } from '../../shared/sidebar/sidebar';
 })
 export class RegistroUsuario {
 
-  // ── Variables enlazadas con los campos del formulario via [(ngModel)] ──
   nombre: string = '';
   email: string = '';
   rol: string = '';
-  nivelPoder: string = '';
+  nivelPoder: string = ''; // ⚠️ ya no se envía
   password: string = '';
-  passwordConfirm: string = ''; // se compara con password en la validación
+  passwordConfirm: string = '';
 
-  // ── Variables de estado de la pantalla ──
-  cargando: boolean = false;  // deshabilita el botón mientras se procesa el registro
-  exitoso: boolean = false;   // muestra la alerta verde tras un registro exitoso
-  errorMessage: string = '';  // muestra la alerta roja si hay error de validación
+  cargando: boolean = false;
+  exitoso: boolean = false;
+  errorMessage: string = '';
 
-  // Router inyectado para redirigir al cancelar
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private http: HttpClient
+  ) {}
 
-  // Valida el formulario y simula el registro del usuario
+  // 🔥 MAPEO DE ROLES (IMPORTANTE)
+  private mapRol(rol: string): number {
+    switch (rol) {
+      case 'Emperador': return 1;
+      case 'Comandante de Flota': return 2;
+      case 'Analista de Recursos': return 3;
+      default: return 0;
+    }
+  }
+
   registrar() {
     this.errorMessage = '';
     this.exitoso = false;
 
-    // Validación: todos los campos obligatorios deben estar completos
     if (!this.nombre || !this.email || !this.rol || !this.password || !this.passwordConfirm) {
       this.errorMessage = 'Por favor complete todos los campos obligatorios.';
       return;
     }
 
-    // Validación: ambas contraseñas deben coincidir antes de continuar
     if (this.password !== this.passwordConfirm) {
       this.errorMessage = 'Las contraseñas no coinciden.';
       return;
     }
 
+    const payload = {
+      nombre: this.nombre,
+      correo: this.email,
+      password: this.password,
+      id_Rol: this.mapRol(this.rol),
+      id_Jerarquia: 1 // ⚠️ temporal (puedes hacerlo dinámico luego)
+    };
+
     this.cargando = true;
 
-    // 🔧 MOCK: simula el delay de una petición HTTP al backend (800ms)
-    // Reemplazar con llamada al servicio cuando esté disponible el endpoint
-    setTimeout(() => {
-      this.exitoso = true;
-      this.cargando = false;
-      // Resetea el formulario para permitir registrar otro usuario sin recargar
-      this.nombre         = '';
-      this.email          = '';
-      this.rol            = '';
-      this.nivelPoder     = '';
-      this.password       = '';
-      this.passwordConfirm = '';
-    }, 800);
+    this.http.post('http://localhost:5186/api/auth/register', payload)
+      .subscribe({
+        next: () => {
+          this.exitoso = true;
+          this.cargando = false;
+
+          this.nombre = '';
+          this.email = '';
+          this.rol = '';
+          this.password = '';
+          this.passwordConfirm = '';
+        },
+        error: (err) => {
+          this.errorMessage = err.error?.message || 'Error al registrar usuario';
+          this.cargando = false;
+        }
+      });
   }
 
-  // Cancela el registro y regresa al catálogo de planetas
   cancelar() {
     this.router.navigate(['/planetas']);
   }
