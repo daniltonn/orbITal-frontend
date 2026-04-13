@@ -1,69 +1,72 @@
-<!-- ──────────────────────────────────────────────────────────
-     Login — HU1
-     Como Comandante de Flota quiero iniciar sesión para
-     acceder al sistema de control galáctico del Imperio
-     ────────────────────────────────────────────────────────── -->
+<app-background></app-background>
 
-<!-- Contenedor principal que ocupa toda la pantalla -->
-<div class="login-wrap">
-
-  <!-- Elementos decorativos de fondo: estrellas y orbes de luz -->
-  <div class="stars"></div>
-  <div class="glow-orb" style="width:400px;height:400px;background:#0044ff;top:-100px;left:-100px;"></div>
-  <div class="glow-orb" style="width:300px;height:300px;background:#00c9ff;bottom:-80px;right:-80px;"></div>
-
-  <!-- Tarjeta central del formulario de login -->
-  <div class="login-card">
-
-    <!-- Logo e identificación del sistema -->
-    <div class="login-logo">Orb<span>IT</span>al</div>
-    <div class="login-sub">Imperio de Freezer · Control Galáctico</div>
-
-    <!-- Alerta de error: se muestra solo si hay un mensaje de error activo -->
-    <div class="alert alert-error" *ngIf="errorMessage">
-      ⚠ {{ errorMessage }}
-    </div>
-
-    <!-- Campo: email del comandante (doble binding + login al presionar Enter) -->
-    <div class="form-group">
-      <label class="form-label">ID de Comandante</label>
-      <input
-        class="form-input"
-        type="email"
-        placeholder="cmd@freezer.empire"
-        [(ngModel)]="email"
-        (keyup.enter)="login()"
-      >
-    </div>
-
-    <!-- Campo: contraseña (doble binding + login al presionar Enter) -->
-    <div class="form-group">
-      <div class="meta-row">
-        <label class="form-label" style="margin:0">Contraseña</label>
-      </div>
-      <input
-        class="form-input"
-        type="password"
-        placeholder="••••••••"
-        [(ngModel)]="password"
-        (keyup.enter)="login()"
-      >
-    </div>
-
-    <!-- Checkbox: mantener la sesión activa entre visitas -->
-    <div class="checkbox-row">
-      <input type="checkbox" [(ngModel)]="recordarSesion" id="recordar">
-      <label class="checkbox-label" for="recordar">Mantener sesión activa</label>
-    </div>
-
-    <!-- Botón de acceso: se deshabilita mientras se procesa la autenticación -->
-    <!-- El texto cambia dinámicamente según el estado de carga -->
-    <button class="btn btn-primary btn-full" (click)="login()" [disabled]="cargando">
-      {{ cargando ? 'Verificando...' : 'Acceder al Sistema' }}
-    </button>
-
-    <!-- Separador visual con mensaje de acceso restringido -->
-    <div class="login-divider">— Solo personal autorizado del Imperio —</div>
-
+<div class="login-wrapper">
+  
+  <div class="logo">
+    <img src="/assets/images/logo/Imagen.svg" alt="Orbital Logo">
   </div>
+
+  <div class="orbital-panel">
+
+    <div class="panel-header">
+      <span class="target-icon"></span>
+      <img src="/assets/images/logo/Texto.svg" alt="Logo">
+    </div>
+
+    <div class="panel-body">
+
+      <!-- ERROR -->
+      <div class="alert alert-error" *ngIf="errorMessage">
+        ⚠ {{ errorMessage }}
+      </div>
+
+      <!-- EMAIL -->
+      <div class="input-group">
+        <i class="icon user"></i>
+        <input 
+          type="email" 
+          placeholder="cmd@freezer.empire"
+          [(ngModel)]="email"
+          (keyup.enter)="login()"
+        >
+      </div>
+
+      <!-- PASSWORD -->
+      <div class="input-group">
+        <i class="icon lock"></i>
+        <input 
+          type="password" 
+          placeholder="••••••••"
+          [(ngModel)]="password"
+          (keyup.enter)="login()"
+        >
+      </div>
+
+      <!-- RECORDAR SESIÓN -->
+      <div class="checkbox-row">
+        <input 
+          type="checkbox" 
+          [(ngModel)]="recordarSesion" 
+          id="recordar"
+        >
+        <label for="recordar">Mantener sesión activa</label>
+      </div>
+
+      <!-- FORGOT -->
+      <div class="forgot">
+        Forgot password?
+      </div>
+
+      <!-- BOTÓN -->
+      <button 
+        class="login-btn"
+        (click)="login()"
+        [disabled]="cargando"
+      >
+        {{ cargando ? 'Verificando...' : 'LOGIN' }}
+      </button>
+
+    </div>
+  </div>
+
 </div>

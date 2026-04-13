@@ -10,11 +10,12 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth';
 import { finalize } from 'rxjs/operators';
+import { Background } from '../../shared/backgrounds/login/login';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, Background],
   templateUrl: './login.html',
   styleUrls: ['./login.scss']
 })

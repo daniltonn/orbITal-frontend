@@ -1,73 +1,156 @@
-/* 
-  Estilos específicos del Login
-  Los estilos globales (colores, fuentes, botones) están en src/styles.scss
-*/
-
-/* Asegura que el fondo cubra toda la pantalla */
-.login-wrap {
-  min-height: 100vh;
-  position: relative;
-  overflow: hidden;
-  background: 
-    linear-gradient(rgba(2,3,10,0.5), rgba(2,3,10,0.5)),
-    url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=1920') center/cover no-repeat;
+/* Centrado del contenedor */
+.login-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    gap: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Borde del cuadro del login */
-.login-card {
-  border-color: rgba(255, 255, 255, 0.08);
-
-
-  /* Freezer semitransparente detrás del formulario */
-&::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: url('https://i.pinimg.com/originals/96/21/30/96213086102f62c9114f240b493ec4a7.png') center 10% / cover no-repeat;
-  opacity: 0.1;
-  pointer-events: none;
-}
-}
-/* Línea decorativa al final del formulario */
-.login-divider {
-  text-align: center;
-  font-size: 10px;
-  color: var(--text2);
-  margin: 16px 0 0;
-  letter-spacing: 1px;
+/* Logo superior (Orbital) */
+.logo img {
+    height: 200px;
+    filter: drop-shadow(0 0 10px rgba(192, 132, 252, 0.5));
 }
 
-/* Fila que alinea el label "Contraseña" y el link "¿Olvidaste tu clave?" */
-.meta-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 7px;
+/* El Panel Principal Estilo Octágono */
+.orbital-panel {
+    width: 500px;
+    background: linear-gradient(145deg, rgba(20, 5, 40, 0.95), rgba(10, 2, 20, 0.98));
+    padding: 30px;
+    border: 1px solid rgba(157, 78, 221, 0.6);
+    position: relative;
+    
+    /* El corte de esquinas característico */
+    clip-path: polygon(
+        8% 0, 92% 0, 100% 8%, 
+        100% 92%, 92% 100%, 8% 100%, 
+        0 92%, 0 8%
+    );
+
+    /* Glow exterior */
+    box-shadow: 
+        0 0 30px rgba(124, 58, 237, 0.2),
+        inset 0 0 20px rgba(124, 58, 237, 0.1);
 }
 
-/* Fila del checkbox con su label */
-.checkbox-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 18px;
+/* Línea decorativa superior (el brillo morado) */
+.orbital-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, transparent, #c084fc, transparent);
+}
 
-  input[type="checkbox"] {
-    width: 14px;
-    height: 14px;
-    accent-color: var(--accent); /* usa el color cyan del sistema */
+/* Cabecera del Panel */
+.panel-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.panel-header img {
+    height: 70px;
+}
+
+
+.panel-body {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(192, 132, 252, 0.3);
+    border-radius: 8px; /* O puedes usar 4px para un look más "agresivo" */
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.6);
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.input-group:focus-within {
+    border-color: #c084fc;
+    box-shadow: 0 0 12px rgba(192, 132, 252, 0.4), inset 0 2px 8px rgba(0, 0, 0, 0.8);
+    transform: translateY(-1px);
+}
+
+.input-group input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #f3e8ff;
+    width: 100%;
+    font-size: 15px;
+}
+
+.input-group input::placeholder {
+    color: rgba(200, 160, 255, 0.4);
+}
+
+/* Iconos (Si usas FontAwesome o similares) */
+.icon {
+    color: #c084fc;
+    font-size: 18px;
+    opacity: 0.8;
+}
+
+/* Forgot Password */
+.forgot {
+    font-size: 13px;
+    text-align: right;
+    color: #c084fc;
     cursor: pointer;
-  }
+    transition: 0.2s;
+    opacity: 0.7;
+    margin-top: -5px;
 }
 
-.checkbox-label {
-  font-size: 12px;
-  color: var(--text2);
-  cursor: pointer;
+.forgot:hover {
+    opacity: 1;
+    text-shadow: 0 0 8px #c084fc;
 }
 
-/* Apariencia del botón cuando está deshabilitado (mientras carga) */
-.btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+/* Botón LOGIN Estilo Sci-Fi */
+.login-btn {
+    margin-top: 15px;
+    padding: 14px;
+    background: linear-gradient(180deg, 
+        #3b0764 0%, 
+        #6d28d9 45%, 
+        #7c3aed 55%, 
+        #3b0764 100%);
+    border: 1px solid rgba(192, 132, 252, 0.6);
+    border-radius: 6px;
+    color: white;
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: 4px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.4s;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-btn:hover {
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.7);
+    filter: brightness(1.2);
+}
+
+/* Efecto de reflejo cristalino sobre el botón */
+.login-btn::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 50%;
+    background: linear-gradient(rgba(255,255,255,0.1), transparent);
 }
