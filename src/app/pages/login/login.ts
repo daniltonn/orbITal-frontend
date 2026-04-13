@@ -24,6 +24,8 @@ export class Login {
   email: string = '';
   password: string = '';
   recordarSesion: boolean = false;
+  emailFocus = false;
+  passwordFocus = false;
 
   cargando: boolean = false;
   errorMessage: string = '';

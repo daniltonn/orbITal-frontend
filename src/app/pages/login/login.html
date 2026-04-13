@@ -20,27 +20,37 @@
         ⚠ {{ errorMessage }}
       </div>
 
-      <!-- EMAIL -->
       <div class="input-group">
-        <i class="icon user"></i>
-        <input 
-          type="email" 
-          placeholder="cmd@freezer.empire"
-          [(ngModel)]="email"
-          (keyup.enter)="login()"
-        >
-      </div>
+  <i class="icon user"></i>
 
-      <!-- PASSWORD -->
-      <div class="input-group">
-        <i class="icon lock"></i>
-        <input 
-          type="password" 
-          placeholder="••••••••"
-          [(ngModel)]="password"
-          (keyup.enter)="login()"
-        >
-      </div>
+  <input
+    type="email"
+    [(ngModel)]="email"
+    (keyup.enter)="login()"
+    (focus)="emailFocus=true"
+    (blur)="emailFocus=false"
+  >
+
+  <label [class.active]="emailFocus || email">
+    Correo
+  </label>
+</div>
+
+<div class="input-group">
+  <i class="icon lock"></i>
+
+  <input
+    type="password"
+    [(ngModel)]="password"
+    (keyup.enter)="login()"
+    (focus)="passwordFocus=true"
+    (blur)="passwordFocus=false"
+  >
+
+  <label [class.active]="passwordFocus || password">
+    Contraseña
+  </label>
+</div>
 
       <!-- RECORDAR SESIÓN -->
       <div class="checkbox-row">
