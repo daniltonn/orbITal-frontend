@@ -15,6 +15,6 @@ export class AuthService {
   return this.http.post(`${this.apiUrl}/login`, {
     correo: email,
     password: password
-  });
+  }, { responseType: 'text' }); // 👈 CLAVE
 }
 }
