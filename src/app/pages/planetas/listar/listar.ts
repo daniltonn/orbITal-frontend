@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Sidebar } from '../../../shared/sidebar/sidebar';
+import { Background } from '../../../shared/backgrounds/login/login';
 
 // Interfaz que define la estructura de un planeta en el catálogo
 export interface Planeta {
@@ -27,7 +28,7 @@ export interface Planeta {
 @Component({
   selector: 'app-listar',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, Sidebar],
+  imports: [CommonModule, FormsModule, RouterModule, Sidebar, Background],
   templateUrl: './listar.html',
   styleUrl: './listar.scss'
 })
