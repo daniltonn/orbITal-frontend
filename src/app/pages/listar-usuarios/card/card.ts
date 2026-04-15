@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import  { CommonModule} from '@angular/common'
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-card',
@@ -10,8 +10,10 @@ import  { CommonModule} from '@angular/common'
 })
 export class CardComponent {
 
-  @Input() nombre!: string
-  @Input() rol!: string
-  @Input() poder!: number
+  @Input() nombre!: string;
+  @Input() rol!: string;
+  @Input() poder!: number;
 
+  // 👇 NUEVO
+  @Input() color!: string;
 }

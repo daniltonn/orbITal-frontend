@@ -1,6 +1,6 @@
-<div class="card" [ngClass]="rol">
+<div class="card" [style.border]="'1px solid ' + color">
 
-  <div class="avatar">
+  <div class="avatar" [style.background]="color">
     {{ nombre.charAt(0).toUpperCase() }}
   </div>
 

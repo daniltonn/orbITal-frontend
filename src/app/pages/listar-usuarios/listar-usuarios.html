@@ -1,10 +1,30 @@
+<!-- FILTROS -->
+<div class="filtros">
+
+  <button
+    (click)="seleccionarRol(null)"
+    [class.active]="rolSeleccionado === null">
+    Todos
+  </button>
+
+  <button
+    *ngFor="let rol of rolesDisponibles"
+    (click)="seleccionarRol(rol)"
+    [class.active]="rolSeleccionado === rol">
+    {{ rol }}
+  </button>
+
+</div>
+
+<!-- LISTA -->
 <div class="contenedor">
 
   <app-card
-    *ngFor="let user of usuarios"
-    [nombre]="user.nombre"
-    [rol]="user.rol"
-    [poder]="user.poder">
-  </app-card>
+  *ngFor="let user of usuariosFiltrados"
+  [nombre]="user.nombre"
+  [rol]="user.rol"
+  [poder]="user.nivel_poder"
+  [color]="getColorRol(user.rol)">
+</app-card>
 
 </div>
