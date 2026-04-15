@@ -11,6 +11,7 @@ import { ListarComponent } from './pages/planetas/listar/listar';
 import { RegistrarEquipoComponent } from './pages/equipos/registrar/registrar';
 import { AsignarMision } from './pages/misiones/asignar/asignar';
 import { EstadoMision } from './pages/misiones/estado/estado';
+import { ListarUsuariosComponent } from './pages/listar-usuarios/listar-usuarios';
 
 export const routes: Routes = [
 
@@ -22,6 +23,9 @@ export const routes: Routes = [
 
   // Registro de usuario
   { path: 'registrar-usuario', component: RegistroUsuario },
+
+  //Lista de usuarios
+  {path: 'usuarios', component: ListarUsuariosComponent},
 
   // Registrar planeta
   { path: 'planetas/registrar', component: RegistrarPlaneta },
