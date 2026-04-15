@@ -1,0 +1,10 @@
+  <div class="layout">
+
+    <!-- PANEL IZQUIERDO -->
+    <app-registro-usuario (rolChange)="rol = $event"></app-registro-usuario>
+
+    <!-- PANEL DERECHO -->
+    @if (rol) {
+      <app-panel-info-rol [rol]="rol"></app-panel-info-rol>
+    }
+  </div>

@@ -1,0 +1,124 @@
+
+<app-sidebar></app-sidebar>
+<div class="card">
+
+  <!-- ── HEADER ─────────────────────────────────────────────── -->
+  <div class="header">
+    <div class="logo">
+      <img src="https://cdn-icons-png.flaticon.com/512/346/346569.png" alt="Orbital Logo" class="logo-img">
+    </div>
+    <div class="header-text">
+      <h1>Crear Usuario</h1>
+      <p>Imperio de Freezer</p>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- ── FORM ───────────────────────────────────────────────── -->
+  <form (ngSubmit)="registrar()" #formRef="ngForm" novalidate>
+
+    <!-- Avatar + Username (NO conectado en TS, se deja visual) -->
+    <div class="avatar-row">
+      <div>
+        <div class="avatar-upload">
+          <input type="file" accept="image/*" />
+          <span>Foto</span>
+        </div>
+      </div>
+      
+      <!-- Id de acceso   -->
+      <div class="avatar-side">
+        <div class="field">
+          <label>Id de acceso</label>
+          <input type="text"
+                 name="email"
+                 [(ngModel)]="email"
+                 placeholder="usuario@freezer.empire"
+                 maxlength="35"
+                 required />
+        </div>
+      </div>
+    </div>
+
+    <!-- Nombre completo -->
+    <div class="field">
+      <label>Nombre completo</label>
+      <input type="text"
+             name="nombreCompleto"
+             [(ngModel)]="nombre"
+             placeholder="Ingrese nombre completo"
+             maxlength="64"
+             required />
+    </div>
+
+    <!-- Rol -->
+    <div class="field">
+      <label>Rol</label>
+      <div class="select-wrap">
+        <select name="rol" [(ngModel)]="rol" (ngModelChange)="onRolChange($event)" required>
+          <option value="">— Seleccionar —</option>
+            <option>Comandante de Flota</option>
+            <option>Analista de Recursos</option>
+            <option>Gestor de Relaciones con Mercenarios</option>
+            <option>Experto en Suspensión de Rebeliones</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Nivel de poder -->
+    <div class="field">
+      <label>Nivel de poder</label>
+      <input type="text"
+             name="nivelPoder"
+             [(ngModel)]="nivelPoder"
+             placeholder="Ej: 9000"
+             maxlength="20" />
+    </div>
+
+    <!-- Contraseñas -->
+    <div class="row-2">
+      <div class="field">
+        <label>Contraseña</label>
+        <input type="password"
+               name="password"
+               [(ngModel)]="password"
+               placeholder="••••••••"
+               required />
+      </div>
+
+      <div class="field">
+        <label>Confirmar contraseña</label>
+        <input type="password"
+               name="passwordConfirm"
+               [(ngModel)]="passwordConfirm"
+               placeholder="••••••••"
+               required />
+      </div>
+    </div>
+
+    <!-- Mensajes -->
+    <div class="error-msg" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <div class="error-msg" *ngIf="password !== passwordConfirm && passwordConfirm">
+      Las contraseñas no coinciden
+    </div>
+
+    <div class="success-msg" *ngIf="exitoso">
+      ✓ Usuario registrado correctamente
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+      <button type="button" class="btn-cancel" (click)="cancelar()">Cancelar</button>
+
+      <button type="submit"
+              class="btn-save"
+              [disabled]="cargando">
+        {{ cargando ? 'Guardando...' : 'Guardar' }}
+      </button>
+    </div>
+
+  </form>
+</div>
