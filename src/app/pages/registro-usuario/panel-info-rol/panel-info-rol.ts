@@ -22,56 +22,110 @@ export class PanelInfoRol implements OnChanges {
 
   private actualizarDatos(): void {
 
-    if (this.rol === 'Comandante de Flota') {
+    if (this.rol === 'Emperador') {
+      this.nivelJerarquico = 'ÉLITE';
+      this.responsabilidades = [
+        'Gobernar el imperio galáctico',
+        'Tomar decisiones estratégicas absolutas',
+        'Supervisar todas las operaciones'
+      ];
+      this.ultimos = [
+        { nombre: 'Freezer Supremo', poder: '530,000' },
+        { nombre: 'Lord Kaltor', poder: '510,000' },
+        { nombre: 'Emperador Zyron', poder: '495,000' }
+      ];
+
+    } else if (this.rol === 'Comandante') {
       this.nivelJerarquico = 'ALTO';
       this.responsabilidades = [
         'Dirigir flotas y misiones',
-        'Supervisar equipos operativos',
-        'Reportar directamente al emperador'
+        'Supervisar tropas',
+        'Ejecutar órdenes del emperador'
       ];
       this.ultimos = [
-        { nombre: 'Dodoria', poder: '150,000' },
-        { nombre: 'Zarbon', poder: '142,000' },
-        { nombre: 'Ginyu', poder: '193,000' }
+        { nombre: 'Kael Vortex', poder: '185,000' },
+        { nombre: 'Draven Korr', poder: '172,000' },
+        { nombre: 'Zyrax Dune', poder: '168,000' }
       ];
-    } else if (this.rol === 'Analista de Recursos') {
+
+    } else if (this.rol === 'Analista') {
       this.nivelJerarquico = 'MEDIO';
       this.responsabilidades = [
-        'Analizar recursos y suministros',
-        'Gestionar logística de misiones',
-        'Colaborar con el equipo de inteligencia'
+        'Analizar datos estratégicos',
+        'Optimizar recursos',
+        'Apoyar decisiones tácticas'
       ];
       this.ultimos = [
-        { nombre: 'Recoome', poder: '120,000' },
-        { nombre: 'Burter', poder: '130,000' },
-        { nombre: 'Bryanna', poder: '125,000' }
+        { nombre: 'Lyra Quantis', poder: '120,000' },
+        { nombre: 'Nexor Byte', poder: '118,000' },
+        { nombre: 'Vaal Sigma', poder: '122,000' }
       ];
-    }
-    else if (this.rol === 'Gestor de Relaciones con Mercenarios') {
+
+    } else if (this.rol === 'Desarrollador') {
       this.nivelJerarquico = 'MEDIO';
       this.responsabilidades = [
-        'Negociar contratos con mercenarios',
-        'Coordinar misiones con mercenarios',
-        'Mantener relaciones con grupos mercenarios'
+        'Desarrollar sistemas del imperio',
+        'Mantener tecnología Scouter',
+        'Optimizar plataformas internas'
       ];
       this.ultimos = [
-        { nombre: 'Jeice', poder: '110,000' },
-        { nombre: 'Guldo', poder: '115,000' },
-        { nombre: 'Ras', poder: '120,000' }
+        { nombre: 'Dev-X01 Orion', poder: '95,000' },
+        { nombre: 'Kryon Stack', poder: '98,000' },
+        { nombre: 'Zent Codeus', poder: '102,000' }
       ];
-    } 
-    else if (this.rol === 'Experto en Suspensión de Rebeliones') {
-      this.nivelJerarquico = 'ALTO';
+
+    } else if (this.rol === 'Especialista') {
+      this.nivelJerarquico = 'MEDIO';
       this.responsabilidades = [
-        'Planificar estrategias para suprimir rebeliones',
-        'Coordinar operaciones militares contra rebeldes',
-        'Colaborar con el equipo de inteligencia para identificar focos de rebelión'
+        'Ejecutar tareas especializadas',
+        'Apoyar operaciones críticas',
+        'Resolver problemas técnicos'
       ];
       this.ultimos = [
-        { nombre: 'Vegeta', poder: '2110,000' },
-        { nombre: 'Kaiu', poder: '290,000' },
-        { nombre: 'Preyk', poder: '150,000' }
+        { nombre: 'Spec Delta-9', poder: '110,000' },
+        { nombre: 'Arkon Vex', poder: '108,000' },
+        { nombre: 'Tyr Lexor', poder: '112,000' }
       ];
+
+    } else if (this.rol === 'Gestor') {
+      this.nivelJerarquico = 'MEDIO';
+      this.responsabilidades = [
+        'Coordinar equipos',
+        'Gestionar operaciones internas',
+        'Supervisar cumplimiento de objetivos'
+      ];
+      this.ultimos = [
+        { nombre: 'Marek Voltan', poder: '101,000' },
+        { nombre: 'Seltra Vion', poder: '99,500' },
+        { nombre: 'Korin Dex', poder: '103,000' }
+      ];
+
+    } else if (this.rol === 'Guerrero de Conquista') {
+      this.nivelJerarquico = 'BAJO';
+      this.responsabilidades = [
+        'Conquistar planetas',
+        'Ejecutar misiones de combate',
+        'Eliminar resistencia enemiga'
+      ];
+      this.ultimos = [
+        { nombre: 'Brakk el Destructor', poder: '60,000' },
+        { nombre: 'Zorak Sangre Fría', poder: '58,000' },
+        { nombre: 'Threx Omega', poder: '62,000' }
+      ];
+
+    } else if (this.rol === 'Sistema Scouter') {
+      this.nivelJerarquico = 'BAJO';
+      this.responsabilidades = [
+        'Monitorear niveles de poder',
+        'Proveer información en tiempo real',
+        'Asistir en decisiones tácticas'
+      ];
+      this.ultimos = [
+        { nombre: 'Scouter-X900', poder: 'N/A' },
+        { nombre: 'EyeUnit-77', poder: 'N/A' },
+        { nombre: 'Probe-Kai', poder: 'N/A' }
+      ];
+
     } else {
       this.nivelJerarquico = '';
       this.responsabilidades = [];

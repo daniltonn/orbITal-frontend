@@ -1,5 +1,3 @@
-
-<app-sidebar></app-sidebar>
 <div class="card">
 
   <!-- ── HEADER ─────────────────────────────────────────────── -->
@@ -56,14 +54,21 @@
       <label>Rol</label>
       <div class="select-wrap">
         <select name="rol" [(ngModel)]="rol" (ngModelChange)="onRolChange($event)" required>
-          <option value="">— Seleccionar —</option>
-            <option>Comandante de Flota</option>
-            <option>Analista de Recursos</option>
-            <option>Gestor de Relaciones con Mercenarios</option>
-            <option>Experto en Suspensión de Rebeliones</option>
+            <option value= "">— Seleccionar —</option>
+            <option>Emperador</option>
+            <option>Comandante</option>
+            <option>Analista</option>
+            <option>Desarrollador</option>
+            <option>Especialista</option>
+            <option>Gestor</option>
+            <option>Guerrero de Conquista</option>
+            <option>Sistema Scouter</option>
         </select>
       </div>
     </div>
+
+    
+
 
     <!-- Nivel de poder -->
     <div class="field">
