@@ -3,6 +3,8 @@ import { usuarios } from './usuarios';
 import { CardComponent } from './card/card';
 import { CommonModule } from '@angular/common';
 import { galaxiasData } from './galaxiaData';
+import { Sidebar } from '../../shared/sidebar/sidebar';
+import { Background } from '../../shared/backgrounds/login/login';
 
 
 
@@ -10,7 +12,7 @@ import { galaxiasData } from './galaxiaData';
   selector: 'app-listar-usuarios',
   standalone: true,
   templateUrl: './listar-usuarios.html',
-  imports: [CardComponent, CommonModule],
+  imports: [CardComponent, CommonModule, Sidebar, Background],
   styleUrls: ['./listar-usuarios.scss']
 })
 export class ListarUsuariosComponent {
