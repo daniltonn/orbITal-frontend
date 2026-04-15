@@ -1,83 +1,137 @@
 // ──────────────────────────────────────────────────────────
-// Registro de Usuario — HU0
-// Como Administrador del Imperio quiero registrar nuevos
-// usuarios para otorgarles acceso al sistema galáctico
-// Solo accesible para administradores del Imperio
+// Registro de Usuario — HU0 (VERSIÓN CON BACKEND)
 // ──────────────────────────────────────────────────────────
 
 import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { Sidebar } from '../../../shared/sidebar/sidebar';
+import { finalize } from 'rxjs/operators';
+import { CrearUsuarioService } from '../../../services/crear-usuario';
 
 @Component({
   selector: 'app-registro-usuario',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, Sidebar],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './panel-registro-usuario.html',
   styleUrl: './panel-registro-usuario.scss'
 })
 export class PanelRegistroUsuario {
   
-  // ── Variables enlazadas con los campos del formulario via [(ngModel)] ──
+  // ── FORM ──
   nombre: string = '';
   email: string = '';
-  rol: string = '';
+  rol: string = ''; // 👈 sigue siendo string (HTML NO se toca)
   nivelPoder: string = '';
   password: string = '';
-  passwordConfirm: string = ''; // se compara con password en la validación
+  passwordConfirm: string = '';
 
+  // ── OUTPUT (panel derecho) ──
   @Output() rolChange = new EventEmitter<string>();
 
-  onRolChange(value: string) {
-    this.rol = value;
-    this.rolChange.emit(this.rol);
+  // ── UI STATE ──
+  cargando: boolean = false;
+  exitoso: boolean = false;
+  errorMessage: string = '';
+
+  constructor(
+    private router: Router,
+    private crearUsuarioService: CrearUsuarioService
+  ) {}
+
+  // 🔥 MAPEO STRING → ID (BACKEND)
+  private getRolId(rol: string): number {
+    const map: { [key: string]: number } = {
+      'Emperador': 1,
+      'Comandante': 2,
+      'Analista': 3,
+      'Desarrollador': 4,
+      'Especialista': 5,
+      'Gestor': 6,
+      'Guerrero de Conquista': 7,
+      'Sistema Scouter': 8
+    };
+
+    return map[rol] || 0;
   }
 
-  // ── Variables de estado de la pantalla ──
-  cargando: boolean = false;  // deshabilita el botón mientras se procesa el registro
-  exitoso: boolean = false;   // muestra la alerta verde tras un registro exitoso
-  errorMessage: string = '';  // muestra la alerta roja si hay error de validación
+  // 🔥 MAPEO ID → JERARQUÍA
+  private obtenerJerarquia(idRol: number): number {
+    switch (idRol) {
+      case 1: return 1;
+      case 2: return 2;
+      case 3:
+      case 4:
+      case 5:
+      case 6: return 3;
+      case 7:
+      case 8: return 4;
+      default: return 5;
+    }
+  }
 
-  // Router inyectado para redirigir al cancelar
-  constructor(private router: Router) {}
+  // 🔥 evento del select (NO tocamos HTML)
+  onRolChange(value: string) {
+    this.rol = value;
+    this.rolChange.emit(this.rol); // 👈 panel derecho sigue funcionando
+  }
 
-  // Valida el formulario y simula el registro del usuario
   registrar() {
     this.errorMessage = '';
     this.exitoso = false;
 
-    // Validación: todos los campos obligatorios deben estar completos
+    // Validaciones
     if (!this.nombre || !this.email || !this.rol || !this.password || !this.passwordConfirm) {
       this.errorMessage = 'Por favor complete todos los campos obligatorios.';
       return;
     }
 
-    // Validación: ambas contraseñas deben coincidir antes de continuar
     if (this.password !== this.passwordConfirm) {
       this.errorMessage = 'Las contraseñas no coinciden.';
       return;
     }
 
+    const idRol = this.getRolId(this.rol);
+
+    if (!idRol) {
+      this.errorMessage = 'Seleccione un rol válido.';
+      return;
+    }
+
     this.cargando = true;
 
-    // 🔧 MOCK: simula el delay de una petición HTTP al backend (800ms)
-    // Reemplazar con llamada al servicio cuando esté disponible el endpoint
-    setTimeout(() => {
-      this.exitoso = true;
-      this.cargando = false;
-      // Resetea el formulario para permitir registrar otro usuario sin recargar
-      this.nombre         = '';
-      this.email          = '';
-      this.rol            = '';
-      this.nivelPoder     = '';
-      this.password       = '';
-      this.passwordConfirm = '';
-    }, 800);
+    const payload = {
+      nombre: this.nombre,
+      correo: this.email,
+      password: this.password,
+      id_Rol: idRol,
+      id_Jerarquia: this.obtenerJerarquia(idRol)
+    };
+
+    this.crearUsuarioService.registrarUsuario(payload)
+      .pipe(finalize(() => this.cargando = false))
+      .subscribe({
+        next: () => {
+          this.exitoso = true;
+
+          // reset
+          this.nombre = '';
+          this.email = '';
+          this.rol = '';
+          this.nivelPoder = '';
+          this.password = '';
+          this.passwordConfirm = '';
+        },
+        error: (err) => {
+          console.error(err);
+          this.errorMessage =
+            err?.error?.message ||
+            err?.error ||
+            'Error al registrar usuario';
+        }
+      });
   }
 
-  // Cancela el registro y regresa al catálogo de planetas
   cancelar() {
     this.router.navigate(['/planetas']);
   }
