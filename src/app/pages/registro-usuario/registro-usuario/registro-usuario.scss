@@ -1,0 +1,10 @@
+.layout {
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-left: clamp(0px, 20vw, 240px);
+  background-size: cover;
+  background-position: center;
+}

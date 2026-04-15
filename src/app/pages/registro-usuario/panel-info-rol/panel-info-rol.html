@@ -1,0 +1,43 @@
+<div class="card">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-wrap">
+      <span>★</span>
+    </div>
+    <div class="header-text">
+      <h1>{{ rol }}</h1>
+      <p>Información de rol</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- CONTENEDOR GALAXIA -->
+  <div class="galaxy-container">
+    <!--  Aquí irá otro componente después -->
+  </div>
+
+  <!-- INFO ROL -->
+  <div class="rol-info">
+    <h2>Rol: {{ rol }}</h2>
+
+    <ul>
+      <li><strong>Nivel Jerárquico: </strong>{{ nivelJerarquico }}</li>
+      <li><strong>Responsabilidades:</strong></li>
+      <ul>
+        <li *ngFor="let r of responsabilidades">{{ r }}</li>
+      </ul>
+    </ul>
+  </div>
+
+  <!-- ÚLTIMOS AGREGADOS -->
+  <div class="ultimos">
+    <h3>Últimos agregados</h3>
+    <div class="item" *ngFor="let item of ultimos">
+      <span>{{ item.nombre }}</span>
+      <span class="power">{{ item.poder }}</span>
+    </div>
+  </div>
+
+</div>
