@@ -16,10 +16,9 @@ import { ListarUsuariosComponent } from './pages/listar-usuarios/listar-usuarios
 export const routes: Routes = [
 
   // Ruta raíz
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
 
-  // Login
-  { path: 'login', component: Login },
+  {path: 'auth', loadChildren: () => import('./features/auth/auth.routes').then(m => m.routes)},
 
   // Registro de usuario
   { path: 'registrar-usuario', component: RegistroUsuario },
@@ -43,5 +42,5 @@ export const routes: Routes = [
   { path: 'misiones/estado', component: EstadoMision },
 
   // Ruta comodín
-  { path: '**', redirectTo: 'login' }
+  { path: '**', redirectTo: 'auth/login' }
 ];
