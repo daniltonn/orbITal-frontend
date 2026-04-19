@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { finalize } from 'rxjs/operators';
-import { CrearUsuarioService } from '../../../services/crear-usuario';
+import { CrearUsuarioService } from '../../../core/services/crear-usuario';
 
 @Component({
   selector: 'app-registro-usuario',

@@ -8,9 +8,9 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth';
+import { AuthService} from '../../services/auth.service';
 import { finalize } from 'rxjs/operators';
-import { Background } from '../../shared/backgrounds/login/login';
+import { Background } from '../../../../shared/backgrounds/login/login';
 
 @Component({
   selector: 'app-login',
@@ -46,15 +46,18 @@ export class Login {
 
     this.cargando = true;
 
-    this.authService.login(this.email, this.password)
+    this.authService.login({
+      correo                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           :this.email, 
+      password: this.password
+    })
       .pipe(
         finalize(() => this.cargando = false)
       )
       .subscribe({
 
-        next: (usuario: any) => {
+        next: (res: string) => {
 
-          localStorage.setItem('usuario', JSON.stringify(usuario));
+          console.log('Respuesta:', res)
 
           if (this.recordarSesion) {
             localStorage.setItem('recordarSesion', 'true');

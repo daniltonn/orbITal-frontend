@@ -4,7 +4,7 @@
 // ──────────────────────────────────────────────────────────
 
 import { Routes } from '@angular/router';
-import { Login } from './pages/login/login';
+import { Login } from './features/auth/pages/login/login';
 import { RegistroUsuario } from './pages/registro-usuario/registro-usuario/registro-usuario';
 import { RegistrarPlaneta } from './pages/planetas/registrar/registrar';
 import { ListarComponent } from './pages/planetas/listar/listar';
