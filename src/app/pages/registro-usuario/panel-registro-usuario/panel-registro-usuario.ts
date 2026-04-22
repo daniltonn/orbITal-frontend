@@ -1,13 +1,12 @@
-// ──────────────────────────────────────────────────────────
-// Registro de Usuario — HU0 (VERSIÓN CON BACKEND)
-// ──────────────────────────────────────────────────────────
-
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { finalize } from 'rxjs/operators';
+
 import { CrearUsuarioService } from '../../../core/services/crear-usuario';
+import { Rol } from '../../../shared/models/rol.model';
+import { RolService } from '../../../shared/services/rol.service';
 
 @Component({
   selector: 'app-registro-usuario',
@@ -16,46 +15,52 @@ import { CrearUsuarioService } from '../../../core/services/crear-usuario';
   templateUrl: './panel-registro-usuario.html',
   styleUrl: './panel-registro-usuario.scss'
 })
-export class PanelRegistroUsuario {
-  
+export class PanelRegistroUsuario implements OnInit {
+
   // ── FORM ──
   nombre: string = '';
   email: string = '';
-  rol: string = ''; // 👈 sigue siendo string (HTML NO se toca)
+  rolId: number | null = null;
   nivelPoder: string = '';
   password: string = '';
   passwordConfirm: string = '';
 
-  // ── OUTPUT (panel derecho) ──
-  @Output() rolChange = new EventEmitter<string>();
+  // ── ROLES ──
+  roles: Rol[] = [];
 
-  // ── UI STATE ──
+  // 🔥 AHORA EMITE OBJETO COMPLETO
+  @Output() rolChange = new EventEmitter<Rol | null>();
+
+  // ── UI ──
   cargando: boolean = false;
   exitoso: boolean = false;
   errorMessage: string = '';
 
   constructor(
     private router: Router,
-    private crearUsuarioService: CrearUsuarioService
+    private crearUsuarioService: CrearUsuarioService,
+    private rolService: RolService
   ) {}
 
-  // 🔥 MAPEO STRING → ID (BACKEND)
-  private getRolId(rol: string): number {
-    const map: { [key: string]: number } = {
-      'Emperador': 1,
-      'Comandante': 2,
-      'Analista': 3,
-      'Desarrollador': 4,
-      'Especialista': 5,
-      'Gestor': 6,
-      'Guerrero de Conquista': 7,
-      'Sistema Scouter': 8
-    };
-
-    return map[rol] || 0;
+  ngOnInit() {
+    this.rolService.getRoles().subscribe({
+      next: (roles) => {
+        this.roles = roles.filter(r => r.activo);
+      },
+      error: (err) => console.error(err)
+    });
   }
 
-  // 🔥 MAPEO ID → JERARQUÍA
+  // 🔥 CUANDO CAMBIA EL SELECT
+  onRolChange() {
+  const rolObj = this.roles.find(r => r.id_Rol === this.rolId) || null;
+
+  console.log('ROL EMITIDO:', rolObj); // 👈 DEBUG
+
+  this.rolChange.emit(rolObj);
+}
+
+  // 🔥 JERARQUÍA
   private obtenerJerarquia(idRol: number): number {
     switch (idRol) {
       case 1: return 1;
@@ -70,18 +75,11 @@ export class PanelRegistroUsuario {
     }
   }
 
-  // 🔥 evento del select (NO tocamos HTML)
-  onRolChange(value: string) {
-    this.rol = value;
-    this.rolChange.emit(this.rol); // 👈 panel derecho sigue funcionando
-  }
-
   registrar() {
     this.errorMessage = '';
     this.exitoso = false;
 
-    // Validaciones
-    if (!this.nombre || !this.email || !this.rol || !this.password || !this.passwordConfirm) {
+    if (!this.nombre || !this.email || !this.rolId || !this.password || !this.passwordConfirm) {
       this.errorMessage = 'Por favor complete todos los campos obligatorios.';
       return;
     }
@@ -91,21 +89,14 @@ export class PanelRegistroUsuario {
       return;
     }
 
-    const idRol = this.getRolId(this.rol);
-
-    if (!idRol) {
-      this.errorMessage = 'Seleccione un rol válido.';
-      return;
-    }
-
     this.cargando = true;
 
     const payload = {
       nombre: this.nombre,
       correo: this.email,
       password: this.password,
-      id_Rol: idRol,
-      id_Jerarquia: this.obtenerJerarquia(idRol)
+      id_Rol: this.rolId,
+      id_Jerarquia: this.obtenerJerarquia(this.rolId)
     };
 
     this.crearUsuarioService.registrarUsuario(payload)
@@ -114,13 +105,16 @@ export class PanelRegistroUsuario {
         next: () => {
           this.exitoso = true;
 
-          // reset
+          // reset form
           this.nombre = '';
           this.email = '';
-          this.rol = '';
+          this.rolId = null;
           this.nivelPoder = '';
           this.password = '';
           this.passwordConfirm = '';
+
+          // 🔥 reset panel derecho
+          this.rolChange.emit(null);
         },
         error: (err) => {
           console.error(err);

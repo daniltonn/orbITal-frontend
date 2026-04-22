@@ -53,16 +53,17 @@
     <div class="field">
       <label>Rol</label>
       <div class="select-wrap">
-        <select name="rol" [(ngModel)]="rol" (ngModelChange)="onRolChange($event)" required>
-            <option value= "">— Seleccionar —</option>
-            <option>Emperador</option>
-            <option>Comandante</option>
-            <option>Analista</option>
-            <option>Desarrollador</option>
-            <option>Especialista</option>
-            <option>Gestor</option>
-            <option>Guerrero de Conquista</option>
-            <option>Sistema Scouter</option>
+        <select name="rolId"
+                [(ngModel)]="rolId"
+                (ngModelChange)="onRolChange()"
+                required>
+
+          <option value="">— Seleccionar —</option>
+
+          <option *ngFor="let r of roles" [ngValue]="r.id_Rol">
+            {{ r.nombre_Rol }}
+          </option>
+
         </select>
       </div>
     </div>

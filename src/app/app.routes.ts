@@ -17,6 +17,7 @@ export const routes: Routes = [
   // Ruta raíz
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
 
+  //Autenticación y login
   {path: 'auth', loadChildren: () => import('./features/auth/auth.routes').then(m => m.routes)},
 
   // Registro de usuario

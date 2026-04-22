@@ -3,6 +3,7 @@ import { PanelRegistroUsuario } from "../panel-registro-usuario/panel-registro-u
 import { PanelInfoRol } from "../panel-info-rol/panel-info-rol";
 import { Background } from '../../../shared/backgrounds/login/login';
 import { Sidebar } from '../../../shared/sidebar/sidebar';
+import { Rol } from '../../../shared/models/rol.model';
 
 @Component({
   selector: 'app-registro-usuario-registro-usuario',
@@ -14,5 +15,5 @@ import { Sidebar } from '../../../shared/sidebar/sidebar';
   
 })
 export class RegistroUsuario {
-  rol: string = '';
+  rol: Rol | null = null;
 }
