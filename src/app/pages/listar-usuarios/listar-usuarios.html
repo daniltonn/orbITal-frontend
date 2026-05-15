@@ -1,0 +1,79 @@
+<div class="layout">
+
+  <app-background></app-background>
+  <app-sidebar></app-sidebar>
+
+  <div class="content">
+
+    <!-- =========================
+         PANEL DE FILTROS
+    ========================= -->
+    <div class="filtros-panel">
+
+      <!-- BUSCADOR -->
+      <input
+        type="text"
+        placeholder="Buscar usuario..."
+        [(ngModel)]="busqueda"
+      />
+
+      <!-- ORDEN -->
+      <button (click)="cambiarOrden()">
+        Orden: {{ orden }}
+      </button>
+
+      <!-- FILTRO ROL -->
+      <div class="roles">
+
+        <button
+          (click)="seleccionarRol(null)"
+          [class.active]="rolSeleccionado === null">
+          Todos
+        </button>
+
+        <button
+          *ngFor="let rol of rolesDisponibles"
+          (click)="seleccionarRol(rol)"
+          [class.active]="rolSeleccionado === rol">
+          {{ rol }}
+        </button>
+
+      </div>
+
+      <!-- RANGO PODER -->
+      <div class="power-range">
+
+        <input
+          type="number"
+          placeholder="Min poder"
+          [(ngModel)]="minPoder"
+        />
+
+        <input
+          type="number"
+          placeholder="Max poder"
+          [(ngModel)]="maxPoder"
+        />
+
+      </div>
+
+    </div>
+
+    <!-- =========================
+         LISTA
+    ========================= -->
+    <div class="contenedor">
+
+      <app-card
+        *ngFor="let user of usuariosFiltrados"
+        [nombre]="user.nombre"
+        [rol]="user.rol"
+        [poder]="user.nivel_poder"
+        [color]="getColorRol(user.rol)">
+      </app-card>
+
+    </div>
+
+  </div>
+
+</div>

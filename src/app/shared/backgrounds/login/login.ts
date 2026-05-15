@@ -97,7 +97,7 @@ for (let i = 0; i < totalStars; i++) {
   ]);
 
   this.velocities.push(0);
-  this.accelerations.push(0.015);
+  this.accelerations.push(0.001);
 }
 
 // crear los Points

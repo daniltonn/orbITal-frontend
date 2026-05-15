@@ -4,24 +4,27 @@
 // ──────────────────────────────────────────────────────────
 
 import { Routes } from '@angular/router';
-import { Login } from './pages/login/login';
-import { RegistroUsuario } from './pages/registro-usuario/registro-usuario';
+import { RegistroUsuario } from './pages/registro-usuario/registro-usuario/registro-usuario';
 import { RegistrarPlaneta } from './pages/planetas/registrar/registrar';
 import { ListarComponent } from './pages/planetas/listar/listar';
 import { RegistrarEquipoComponent } from './pages/equipos/registrar/registrar';
 import { AsignarMision } from './pages/misiones/asignar/asignar';
 import { EstadoMision } from './pages/misiones/estado/estado';
+import { ListarUsuariosComponent } from './pages/listar-usuarios/listar-usuarios';
 
 export const routes: Routes = [
 
   // Ruta raíz
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
 
-  // Login
-  { path: 'login', component: Login },
+  //Autenticación y login
+  {path: 'auth', loadChildren: () => import('./features/auth/auth.routes').then(m => m.routes)},
 
   // Registro de usuario
   { path: 'registrar-usuario', component: RegistroUsuario },
+
+  //Lista de usuarios
+  {path: 'usuarios', component: ListarUsuariosComponent},
 
   // Registrar planeta
   { path: 'planetas/registrar', component: RegistrarPlaneta },
@@ -39,5 +42,5 @@ export const routes: Routes = [
   { path: 'misiones/estado', component: EstadoMision },
 
   // Ruta comodín
-  { path: '**', redirectTo: 'login' }
+  { path: '**', redirectTo: 'auth/login' }
 ];

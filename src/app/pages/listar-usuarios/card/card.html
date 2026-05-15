@@ -1,0 +1,13 @@
+<div class="card" [style.border]="'1px solid ' + color">
+
+  <div class="avatar" [style.background]="color">
+    {{ nombre.charAt(0).toUpperCase() }}
+  </div>
+
+  <div class="info">
+    <h3>{{ nombre }}</h3>
+    <p>{{ rol }}</p>
+    <span>⚡ {{ poder }}</span>
+  </div>
+
+</div>
