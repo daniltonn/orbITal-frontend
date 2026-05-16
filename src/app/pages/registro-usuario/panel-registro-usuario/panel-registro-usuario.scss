@@ -13,11 +13,9 @@
     position: relative;
     width: 100%;
     max-width: 100%;
-    background: rgba(18, 6, 38, .72);
-    border: 1px solid rgba(160, 80, 255, .35);
-    border-radius: 20px;
-    backdrop-filter: blur(22px) saturate(1.6);
-    box-shadow: 0 0 0 1px rgba(160, 80, 255, .12) inset, 0 0 60px rgba(130, 30, 255, .25), 0 20px 80px rgba(0, 0, 0, .55);
+    background: rgba(18, 6, 42, 0.75);
+    border: 1px solid rgba(160, 110, 255, .22);
+    border-radius: 22px;
     overflow: hidden;
     padding: 36px 32px 32px;
     color: #e8d8ff;
@@ -27,20 +25,9 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(255, 220, 255, .06) 0%, transparent 50%);
+    border-radius: 22px;
+    background: radial-gradient(600px 200px at 0% 0%, rgba(160, 110, 255, .08), transparent 60%);
     pointer-events: none;
-    border-radius: 20px;
-}
-
-.card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 12%;
-    right: 12%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, #c45bff, transparent);
-    opacity: .8;
 }
 
 .header {
@@ -231,8 +218,8 @@ select option {
 }
 
 .error-msg {
-    font-size: 0.9rem;
-    letter-spacing: .06em;
+    font-size: .68rem;
+    letter-spacing: .04em;
     color: rgba(220, 80, 255, .9);
     display: none;
     text-shadow: 0 0 8px rgba(220, 80, 255, .5);
@@ -327,13 +314,81 @@ button:disabled {
     }
 }
 
-.success-msg {
-    font-size: .75rem;
-    color: #7dffb3;
-    text-shadow: 0 0 8px rgba(120, 255, 180, .6);
-    margin-bottom: 10px;
+.toast {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    background: rgba(100, 20, 180, .9);
+    border: 1px solid #b84fff;
+    border-radius: 10px;
+    padding: 14px 22px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: .88rem;
+    color: #fff;
+    letter-spacing: .06em;
+    box-shadow: 0 0 24px rgba(150, 40, 230, .6);
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity .3s, transform .3s;
+    pointer-events: none;
+    z-index: 9999;
+
+    &.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.error-msg {
-    display: block; // importante para template-driven
+.req {
+    color: #ff7ae0;
+    margin-left: 2px;
+}
+
+.error-banner {
+    font-size: .78rem;
+    color: rgba(220, 80, 255, .9);
+    text-shadow: 0 0 8px rgba(220, 80, 255, .5);
+    letter-spacing: .04em;
+    margin-bottom: 8px;
+}
+
+// ── Medidor de seguridad de contraseña ───────────────────────
+.strength-meter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.strength-bars {
+    display: flex;
+    gap: 4px;
+    flex: 1;
+}
+
+.bar {
+    height: 4px;
+    flex: 1;
+    border-radius: 2px;
+    background: rgba(140, 90, 220, .15);
+    transition: background .2s ease;
+
+    &.bar--debil  { background: #ff4d6a; }
+    &.bar--media  { background: #ffaa30; }
+    &.bar--fuerte { background: #a8e063; }
+    &.bar--max    { background: #b073ff; box-shadow: 0 0 6px rgba(176, 115, 255, .5); }
+}
+
+.strength-label {
+    font-size: .66rem;
+    font-weight: 600;
+    letter-spacing: .06em;
+    min-width: 62px;
+    text-align: right;
+    transition: color .2s ease;
+
+    &.nivel-1 { color: #ff4d6a; }
+    &.nivel-2 { color: #ffaa30; }
+    &.nivel-3 { color: #a8e063; }
+    &.nivel-4 { color: #b073ff; text-shadow: 0 0 8px rgba(176, 115, 255, .5); }
 }

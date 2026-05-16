@@ -7,17 +7,23 @@
 }
 
 .card {
-    width: 100% ;
-    background: rgba(18, 6, 38, 0.72);
-    border: 1px solid rgba(160, 80, 255, 0.35);
-    border-radius: 20px;
-    backdrop-filter: blur(22px) saturate(1.6);
-    box-shadow:
-        0 0 0 1px rgba(160, 80, 255, 0.12) inset,
-        0 0 60px rgba(130, 30, 255, 0.25),
-        0 20px 80px rgba(0, 0, 0, 0.55);
+    position: relative;
+    width: 100%;
+    background: rgba(18, 6, 42, 0.75);
+    border: 1px solid rgba(160, 110, 255, .22);
+    border-radius: 22px;
+    overflow: hidden;
     padding: 28px;
     color: #e8d8ff;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 22px;
+    background: radial-gradient(600px 200px at 0% 0%, rgba(160, 110, 255, .08), transparent 60%);
+    pointer-events: none;
 }
 
 /* HEADER reutilizado */
@@ -99,4 +105,13 @@
 
 .power {
     color: #c45bff;
+}
+
+.sin-datos {
+    font-size: .75rem;
+    color: rgba(185, 173, 222, .45);
+    letter-spacing: .06em;
+    text-align: center;
+    padding: 10px 0;
+    font-style: italic;
 }

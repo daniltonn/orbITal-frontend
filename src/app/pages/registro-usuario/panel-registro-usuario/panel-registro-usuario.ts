@@ -35,6 +35,7 @@ export class PanelRegistroUsuario implements OnInit {
   cargando: boolean = false;
   exitoso: boolean = false;
   errorMessage: string = '';
+  submitted: boolean = false;
 
   constructor(
     private router: Router,
@@ -60,7 +61,34 @@ export class PanelRegistroUsuario implements OnInit {
   this.rolChange.emit(rolObj);
 }
 
-  // 🔥 JERARQUÍA
+  get passwordPuntaje(): number {
+    const p = this.password;
+    if (!p) return 0;
+    let score = 0;
+    if (p.length >= 8) score++;
+    if (p.length >= 12) score++;
+    if (/[A-Z]/.test(p)) score++;
+    if (/[0-9]/.test(p)) score++;
+    if (/[^A-Za-z0-9]/.test(p)) score++;
+    return Math.min(score, 4);
+  }
+
+  get passwordNivelLabel(): string {
+    return ['', 'Débil', 'Media', 'Fuerte', 'Muy fuerte'][this.passwordPuntaje] ?? '';
+  }
+
+  barClass(pos: number): object {
+    const active = this.passwordPuntaje >= pos;
+    return {
+      'bar--on': active,
+      'bar--debil': active && this.passwordPuntaje === 1,
+      'bar--media': active && this.passwordPuntaje === 2,
+      'bar--fuerte': active && this.passwordPuntaje === 3,
+      'bar--max': active && this.passwordPuntaje >= 4,
+    };
+  }
+
+  // ── JERARQUÍA
   private obtenerJerarquia(idRol: number): number {
     switch (idRol) {
       case 1: return 1;
@@ -76,16 +104,19 @@ export class PanelRegistroUsuario implements OnInit {
   }
 
   registrar() {
+    this.submitted = true;
     this.errorMessage = '';
     this.exitoso = false;
 
-    if (!this.nombre || !this.email || !this.rolId || !this.password || !this.passwordConfirm) {
-      this.errorMessage = 'Por favor complete todos los campos obligatorios.';
+    if (!this.nombre || !this.email || !this.rolId || !this.nivelPoder || !this.password || !this.passwordConfirm) {
+      return;
+    }
+
+    if (!this.email.includes('@')) {
       return;
     }
 
     if (this.password !== this.passwordConfirm) {
-      this.errorMessage = 'Las contraseñas no coinciden.';
       return;
     }
 
@@ -104,6 +135,7 @@ export class PanelRegistroUsuario implements OnInit {
       .subscribe({
         next: () => {
           this.exitoso = true;
+          this.submitted = false;
 
           // reset form
           this.nombre = '';
@@ -113,7 +145,6 @@ export class PanelRegistroUsuario implements OnInit {
           this.password = '';
           this.passwordConfirm = '';
 
-          // 🔥 reset panel derecho
           this.rolChange.emit(null);
         },
         error: (err) => {

@@ -15,7 +15,7 @@
   <!-- ── FORM ───────────────────────────────────────────────── -->
   <form (ngSubmit)="registrar()" #formRef="ngForm" novalidate>
 
-    <!-- Avatar + Username (NO conectado en TS, se deja visual) -->
+    <!-- Avatar + Id de acceso -->
     <div class="avatar-row">
       <div>
         <div class="avatar-upload">
@@ -23,108 +23,135 @@
           <span>Foto</span>
         </div>
       </div>
-      
-      <!-- Id de acceso   -->
+
       <div class="avatar-side">
-        <div class="field">
-          <label>Id de acceso</label>
+        <div class="field" [class.has-error]="emailRef.invalid && (emailRef.touched || submitted)">
+          <label>Id de acceso <span class="req">*</span></label>
           <input type="text"
                  name="email"
                  [(ngModel)]="email"
+                 #emailRef="ngModel"
                  placeholder="usuario@freezer.empire"
-                 maxlength="35"
-                 required />
+                 maxlength="50"
+                 required
+                 pattern=".*@.*" />
+          @if (emailRef.errors?.['required'] && (emailRef.touched || submitted)) {
+            <span class="error-msg">Campo requerido</span>
+          }
+          @if (!emailRef.errors?.['required'] && emailRef.errors?.['pattern'] && (emailRef.touched || submitted)) {
+            <span class="error-msg">El Id de acceso debe contener @</span>
+          }
         </div>
       </div>
     </div>
 
     <!-- Nombre completo -->
-    <div class="field">
-      <label>Nombre completo</label>
+    <div class="field" [class.has-error]="nombreRef.invalid && (nombreRef.touched || submitted)">
+      <label>Nombre completo <span class="req">*</span></label>
       <input type="text"
              name="nombreCompleto"
              [(ngModel)]="nombre"
+             #nombreRef="ngModel"
              placeholder="Ingrese nombre completo"
              maxlength="64"
              required />
+      @if (nombreRef.invalid && (nombreRef.touched || submitted)) {
+        <span class="error-msg">Campo requerido</span>
+      }
     </div>
 
     <!-- Rol -->
-    <div class="field">
-      <label>Rol</label>
+    <div class="field" [class.has-error]="!rolId && submitted">
+      <label>Rol <span class="req">*</span></label>
       <div class="select-wrap">
         <select name="rolId"
                 [(ngModel)]="rolId"
-                (ngModelChange)="onRolChange()"
-                required>
-
+                (ngModelChange)="onRolChange()">
           <option value="">— Seleccionar —</option>
-
-          <option *ngFor="let r of roles" [ngValue]="r.id_Rol">
-            {{ r.nombre_Rol }}
-          </option>
-
+          @for (r of roles; track r.id_Rol) {
+            <option [ngValue]="r.id_Rol">{{ r.nombre_Rol }}</option>
+          }
         </select>
       </div>
+      @if (!rolId && submitted) {
+        <span class="error-msg">Campo requerido</span>
+      }
     </div>
 
-    
-
-
     <!-- Nivel de poder -->
-    <div class="field">
-      <label>Nivel de poder</label>
+    <div class="field" [class.has-error]="nivelPoderRef.invalid && (nivelPoderRef.touched || submitted)">
+      <label>Nivel de poder <span class="req">*</span></label>
       <input type="text"
              name="nivelPoder"
              [(ngModel)]="nivelPoder"
+             #nivelPoderRef="ngModel"
              placeholder="Ej: 9000"
-             maxlength="20" />
+             maxlength="20"
+             required />
+      @if (nivelPoderRef.invalid && (nivelPoderRef.touched || submitted)) {
+        <span class="error-msg">Campo requerido</span>
+      }
     </div>
 
     <!-- Contraseñas -->
     <div class="row-2">
-      <div class="field">
-        <label>Contraseña</label>
+      <div class="field" [class.has-error]="passwordRef.invalid && (passwordRef.touched || submitted)">
+        <label>Contraseña <span class="req">*</span></label>
         <input type="password"
                name="password"
                [(ngModel)]="password"
+               #passwordRef="ngModel"
                placeholder="••••••••"
                required />
+        @if (passwordRef.invalid && (passwordRef.touched || submitted)) {
+          <span class="error-msg">Campo requerido</span>
+        }
+        @if (password) {
+          <div class="strength-meter">
+            <div class="strength-bars">
+              <span class="bar" [ngClass]="barClass(1)"></span>
+              <span class="bar" [ngClass]="barClass(2)"></span>
+              <span class="bar" [ngClass]="barClass(3)"></span>
+              <span class="bar" [ngClass]="barClass(4)"></span>
+            </div>
+            <span class="strength-label" [ngClass]="'nivel-' + passwordPuntaje">{{ passwordNivelLabel }}</span>
+          </div>
+        }
       </div>
 
-      <div class="field">
-        <label>Confirmar contraseña</label>
+      <div class="field" [class.has-error]="(passwordConfirmRef.invalid && (passwordConfirmRef.touched || submitted)) || (passwordConfirm && password !== passwordConfirm)">
+        <label>Confirmar contraseña <span class="req">*</span></label>
         <input type="password"
                name="passwordConfirm"
                [(ngModel)]="passwordConfirm"
+               #passwordConfirmRef="ngModel"
                placeholder="••••••••"
                required />
+        @if (passwordConfirmRef.invalid && (passwordConfirmRef.touched || submitted)) {
+          <span class="error-msg">Campo requerido</span>
+        }
+        @if (!passwordConfirmRef.invalid && passwordConfirm && password !== passwordConfirm) {
+          <span class="error-msg">Las contraseñas no coinciden</span>
+        }
       </div>
     </div>
 
-    <!-- Mensajes -->
-    <div class="error-msg" *ngIf="errorMessage">
-      {{ errorMessage }}
-    </div>
-
-    <div class="error-msg" *ngIf="password !== passwordConfirm && passwordConfirm">
-      Las contraseñas no coinciden
-    </div>
-
-    <div class="success-msg" *ngIf="exitoso">
-      ✓ Usuario registrado correctamente
-    </div>
+    <!-- Error de API -->
+    @if (errorMessage) {
+      <div class="error-banner">{{ errorMessage }}</div>
+    }
 
     <!-- Actions -->
     <div class="actions">
       <button type="button" class="btn-cancel" (click)="cancelar()">Cancelar</button>
-
-      <button type="submit"
-              class="btn-save"
-              [disabled]="cargando">
+      <button type="submit" class="btn-save" [disabled]="cargando">
         {{ cargando ? 'Guardando...' : 'Guardar' }}
       </button>
     </div>
 
   </form>
+
+  <div class="toast" [class.visible]="exitoso" role="status" aria-live="polite">
+    ✓ Usuario registrado correctamente
+  </div>
 </div>

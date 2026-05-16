@@ -1,0 +1,276 @@
+<div class="panel" [formGroup]="form">
+
+  <!-- ── HEADER ─────────────────────────────────────────────── -->
+  <div class="panel-header">
+    <span class="header-ico">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <rect x="4" y="3" width="14" height="18" rx="2"/><path d="M8 7h6M8 11h6M8 15h4"/>
+      </svg>
+    </span>
+    <span>DATOS GENERALES</span>
+  </div>
+
+  <!-- ── NOMBRE + FECHA ─────────────────────────────────────── -->
+  <div class="row-2">
+
+    <div class="field" [class.has-error]="hasError('name','required') || hasError('name','maxlength') || hasError('name','nameExists')">
+      <label class="field-label" for="pname">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="9" ry="3.5"/>
+        </svg>
+        Nombre del planeta <span class="req">*</span>
+        <span class="char-limit-hint">(máx. 40)</span>
+      </label>
+      <input id="pname" type="text" formControlName="name"
+             placeholder="Ingrese nombre del planeta" maxlength="40"
+             (blur)="normalizePlanetName()" />
+      @if (hasError('name','required')) {
+        <span class="error-msg">Campo requerido</span>
+      }
+      @if (hasError('name','maxlength')) {
+        <span class="error-msg">Máximo 40 caracteres</span>
+      }
+      @if (hasError('name','nameExists')) {
+        <span class="error-msg">Este nombre ya existe en la base de datos</span>
+      }
+      @if (form.get('name')?.pending) {
+        <span class="name-checking">Verificando disponibilidad…</span>
+      }
+      @if (form.get('name')?.valid && !form.get('name')?.pending && form.get('name')?.touched && form.get('name')?.value?.trim()) {
+        <span class="name-available">Nombre disponible</span>
+      }
+    </div>
+
+    <div class="field" [class.has-error]="hasError('identificationDate','required')">
+      <label class="field-label" for="pdate">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/>
+        </svg>
+        Fecha de identificación <span class="req">*</span>
+      </label>
+      <div class="date-wrap">
+        <input id="pdate" type="date" formControlName="identificationDate" class="date-input" />
+        <span class="date-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/>
+          </svg>
+        </span>
+      </div>
+      @if (hasError('identificationDate','required')) {
+        <span class="error-msg">Campo requerido</span>
+      }
+    </div>
+
+  </div>
+
+  <!-- ── COORDENADAS ────────────────────────────────────────── -->
+  <div class="field">
+    <label class="field-label">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/>
+      </svg>
+      Coordenadas (sistema galáctico) <span class="req">*</span>
+      <span class="tooltip-icon" title="Sistema de coordenadas galáctico">?</span>
+    </label>
+    <div class="coords-outer" [formGroup]="coordsGroup">
+      <div class="coords-row">
+        <div class="coord-field" [class.has-error]="coordError('x')">
+          <span class="coord-label">X</span>
+          <input type="number" formControlName="x" placeholder="-999999 / 999999"
+                 min="-999999" max="999999" />
+          @if (coordsGroup.get('x')?.touched && coordsGroup.get('x')?.hasError('required')) {
+            <span class="error-msg">Requerido</span>
+          }
+          @if (coordsGroup.get('x')?.touched && (coordsGroup.get('x')?.hasError('min') || coordsGroup.get('x')?.hasError('max'))) {
+            <span class="error-msg">Entre -999.999 y 999.999</span>
+          }
+        </div>
+        <div class="coord-field" [class.has-error]="coordError('y')">
+          <span class="coord-label">Y</span>
+          <input type="number" formControlName="y" placeholder="-999999 / 999999"
+                 min="-999999" max="999999" />
+          @if (coordsGroup.get('y')?.touched && coordsGroup.get('y')?.hasError('required')) {
+            <span class="error-msg">Requerido</span>
+          }
+          @if (coordsGroup.get('y')?.touched && (coordsGroup.get('y')?.hasError('min') || coordsGroup.get('y')?.hasError('max'))) {
+            <span class="error-msg">Entre -999.999 y 999.999</span>
+          }
+        </div>
+        <div class="coord-field" [class.has-error]="coordError('z')">
+          <span class="coord-label">Z</span>
+          <input type="number" formControlName="z" placeholder="-999999 / 999999"
+                 min="-999999" max="999999" />
+          @if (coordsGroup.get('z')?.touched && coordsGroup.get('z')?.hasError('required')) {
+            <span class="error-msg">Requerido</span>
+          }
+          @if (coordsGroup.get('z')?.touched && (coordsGroup.get('z')?.hasError('min') || coordsGroup.get('z')?.hasError('max'))) {
+            <span class="error-msg">Entre -999.999 y 999.999</span>
+          }
+        </div>
+      </div>
+      <div class="locate-wrap">
+        <button type="button" class="locate-btn" aria-label="Localizar coordenadas">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8"/>
+            <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
+          </svg>
+        </button>
+        <span class="locate-cap">{{ hasCoords ? 'Con selección' : 'Sin selección' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── GALAXIA + POBLACIÓN ────────────────────────────────── -->
+  <div class="row-2">
+
+    <div class="field" [class.has-error]="hasError('galaxy','required')">
+      <label class="field-label" for="pgalaxy">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M12 2c5 4 5 14 0 20-5-6-5-16 0-20z"/><path d="M2 12c4-5 14-5 20 0-6 5-16 5-20 0z"/>
+        </svg>
+        Galaxia <span class="req">*</span>
+      </label>
+      <div class="select-wrap">
+        <select id="pgalaxy" class="native-select" formControlName="galaxy">
+          <option [ngValue]="null">Seleccione una galaxia</option>
+          @for (g of galaxiaOptions; track g.id_Galaxia) {
+            <option [ngValue]="g.id_Galaxia">{{ g.nombre }}</option>
+          }
+        </select>
+      </div>
+      @if (hasError('galaxy','required')) {
+        <span class="error-msg">Campo requerido</span>
+      }
+    </div>
+
+    <div class="field" [class.has-error]="hasError('estimatedPop','required') || hasError('estimatedPop','max')">
+      <label class="field-label" for="ppop">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        Población estimada <span class="req">*</span>
+      </label>
+      <input id="ppop" type="number" formControlName="estimatedPop"
+             placeholder="Ingrese la población estimada" min="0" max="1000000000000" />
+      @if (hasError('estimatedPop','required')) {
+        <span class="error-msg">Campo requerido</span>
+      }
+      @if (hasError('estimatedPop','min')) {
+        <span class="error-msg">La población no puede ser negativa</span>
+      }
+      @if (hasError('estimatedPop','max')) {
+        <span class="error-msg">Máximo 1.000.000.000.000 habitantes</span>
+      }
+    </div>
+
+  </div>
+
+  <!-- ── DESCRIPCIÓN ────────────────────────────────────────── -->
+  <div class="field">
+    <label class="field-label" for="pdesc">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <rect x="4" y="3" width="14" height="18" rx="2"/><path d="M8 7h6M8 11h6M8 15h4"/>
+      </svg>
+      Descripción del planeta
+    </label>
+    <div class="textarea-wrap">
+      <textarea id="pdesc" formControlName="description" maxlength="500"
+                placeholder="Ingrese la descripción del planeta" rows="4"></textarea>
+      <span class="char-count">{{ descriptionLength }} / 500</span>
+    </div>
+  </div>
+
+  <!-- ── DISEÑO DEL PLANETA ─────────────────────────────────── -->
+  <div class="subcard">
+    <div class="subcard-header">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/><path d="M3 12c4-5 14-5 18 0M3 12c4 5 14 5 18 0"/>
+      </svg>
+      Diseño del planeta
+    </div>
+    <div class="design-grid">
+
+      <div class="planet-preview-box">
+        <span class="preview-label">Vista previa</span>
+        <div class="planet-sphere" [style.background]="planetGradient"></div>
+      </div>
+
+      <div class="color-stack">
+        <div class="color-section-label">Color del planeta <span class="req">*</span></div>
+
+        <!-- Color primario -->
+        <div class="color-pick"
+             [class.has-error]="form.get('primaryColor')?.invalid && form.get('primaryColor')?.touched">
+          <div class="swatch" [style.background]="form.get('primaryColor')?.value"
+               (click)="primaryPicker.click()" title="Abrir selector de color"></div>
+          <input type="text" class="color-text-input" formControlName="primaryColor"
+                 placeholder="#b073ff" maxlength="7" />
+          <span class="chev" (click)="primaryPicker.click()"></span>
+          <input #primaryPicker type="color" class="hidden-color"
+                 [value]="form.get('primaryColor')?.value"
+                 (input)="onColorPick('primaryColor', primaryPicker.value)" />
+        </div>
+        @if (form.get('primaryColor')?.invalid && form.get('primaryColor')?.touched) {
+          <span class="color-error-msg">Ingrese un color HEX válido (#RRGGBB)</span>
+        }
+
+        <!-- Color secundario -->
+        <div class="color-pick"
+             [class.has-error]="form.get('secondaryColor')?.invalid && form.get('secondaryColor')?.touched">
+          <div class="swatch" [style.background]="form.get('secondaryColor')?.value"
+               (click)="secondaryPicker.click()" title="Abrir selector de color"></div>
+          <input type="text" class="color-text-input" formControlName="secondaryColor"
+                 placeholder="#4b8cff" maxlength="7" />
+          <span class="chev" (click)="secondaryPicker.click()"></span>
+          <input #secondaryPicker type="color" class="hidden-color"
+                 [value]="form.get('secondaryColor')?.value"
+                 (input)="onColorPick('secondaryColor', secondaryPicker.value)" />
+        </div>
+        @if (form.get('secondaryColor')?.invalid && form.get('secondaryColor')?.touched) {
+          <span class="color-error-msg">Ingrese un color HEX válido (#RRGGBB)</span>
+        }
+
+        <!-- Color de acento -->
+        <div class="color-pick"
+             [class.has-error]="form.get('accentColor')?.invalid && form.get('accentColor')?.touched">
+          <div class="swatch" [style.background]="form.get('accentColor')?.value"
+               (click)="accentPicker.click()" title="Abrir selector de color"></div>
+          <input type="text" class="color-text-input" formControlName="accentColor"
+                 placeholder="#4be3d0" maxlength="7" />
+          <span class="chev" (click)="accentPicker.click()"></span>
+          <input #accentPicker type="color" class="hidden-color"
+                 [value]="form.get('accentColor')?.value"
+                 (input)="onColorPick('accentColor', accentPicker.value)" />
+        </div>
+        @if (form.get('accentColor')?.invalid && form.get('accentColor')?.touched) {
+          <span class="color-error-msg">Ingrese un color HEX válido (#RRGGBB)</span>
+        }
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ESTADO INICIAL ─────────────────────────────────────── -->
+  <div class="subcard">
+    <div class="subcard-header">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/>
+      </svg>
+      Estado inicial <span class="req">*</span>
+    </div>
+    <div class="select-wrap">
+      <select class="native-select" formControlName="status"
+              [class.has-error-select]="hasError('status','required')">
+        <option [ngValue]="null">Seleccione el estado inicial</option>
+        @for (s of estadoOptions; track s.id) {
+          <option [ngValue]="s.id">{{ s.label }}</option>
+        }
+      </select>
+    </div>
+    @if (hasError('status','required')) {
+      <span class="error-msg">Campo requerido</span>
+    }
+  </div>
+
+</div>

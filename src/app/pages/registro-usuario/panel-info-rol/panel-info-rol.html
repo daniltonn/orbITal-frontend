@@ -6,7 +6,7 @@
       <span>★</span>
     </div>
     <div class="header-text">
-      <h1>{{ rol }}</h1>
+      <h1>{{ rol?.nombre_Rol }}</h1>
       <p>Información de rol</p>
     </div>
   </div>
@@ -14,19 +14,18 @@
   <div class="divider"></div>
 
   <!-- CONTENEDOR GALAXIA -->
-  <div class="galaxy-container">
-    <!--  Aquí irá otro componente después -->
-  </div>
+  <div class="galaxy-container"></div>
 
   <!-- INFO ROL -->
   <div class="rol-info">
     <h2>Rol: {{ rol?.nombre_Rol }}</h2>
-
     <ul>
       <li><strong>Nivel Jerárquico: </strong>{{ nivelJerarquico }}</li>
       <li><strong>Responsabilidades:</strong></li>
       <ul>
-        <li *ngFor="let r of responsabilidades">{{ r }}</li>
+        @for (r of responsabilidades; track $index) {
+          <li>{{ r }}</li>
+        }
       </ul>
     </ul>
   </div>
@@ -34,10 +33,17 @@
   <!-- ÚLTIMOS AGREGADOS -->
   <div class="ultimos">
     <h3>Últimos agregados</h3>
-    <div class="item" *ngFor="let item of ultimos">
-      <span>{{ item.nombre }}</span>
-      <span class="power">{{ item.poder }}</span>
-    </div>
+    @if (cargandoUltimos) {
+      <div class="sin-datos">Cargando...</div>
+    } @else if (ultimos.length === 0) {
+      <div class="sin-datos">Sin datos registrados</div>
+    } @else {
+      @for (item of ultimos; track item.nombre) {
+        <div class="item">
+          <span>{{ item.nombre }}</span>
+        </div>
+      }
+    }
   </div>
 
 </div>

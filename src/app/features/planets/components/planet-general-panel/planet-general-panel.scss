@@ -1,0 +1,395 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Rajdhani:wght@300;400;500;600&display=swap');
+
+$c-bg-panel:     rgba(18, 6, 42, 0.75);
+$c-bg-input:     rgba(10, 5, 25, 0.7);
+$c-bg-sub:       linear-gradient(180deg, rgba(28,15,68,.55), rgba(14,7,36,.7));
+$c-border:       rgba(140, 70, 240, 0.22);
+$c-border-focus: rgba(176, 115, 255, 0.85);
+$c-border-err:   rgba(210, 70, 255, 0.9);
+$c-glow:         rgba(150, 55, 240, 0.4);
+$c-neon:         #b073ff;
+$c-neon-bright:  #d8c2ff;
+$c-neon-dim:     rgba(176, 115, 255, 0.55);
+$c-text:         #ece6ff;
+$c-text-muted:   rgba(185, 173, 222, 0.55);
+$c-label:        #d6c9ff;
+$font-display:   'Orbitron', sans-serif;
+$font-body:      'Rajdhani', sans-serif;
+$radius:         16px;
+$radius-sm:      10px;
+$t:              0.15s ease;
+
+@mixin input-base {
+  width: 100%;
+  background: $c-bg-input;
+  border: 1px solid rgba(140, 90, 220, 0.22);
+  border-radius: $radius-sm;
+  padding: 13px 14px;
+  color: $c-text;
+  font-family: $font-body;
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  outline: none;
+  appearance: none;
+  transition: border-color $t, box-shadow $t, background $t;
+  box-sizing: border-box;
+  &::placeholder { color: #6a5e8e; }
+  &:focus {
+    border-color: $c-neon;
+    box-shadow: 0 0 0 4px rgba(176,115,255,.15), 0 0 18px rgba(176,115,255,.25);
+  }
+}
+
+// ── Host / Panel ──────────────────────────────────────────────
+:host { display: block; }
+
+.panel {
+  background: $c-bg-panel;
+  border: 1px solid rgba(160,110,255,.22);
+  border-radius: 22px;
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  height: 100%;
+
+  &::before {
+    content: '';
+    position: absolute; inset: 0; border-radius: 22px;
+    background: radial-gradient(600px 200px at 0% 0%, rgba(160,110,255,.08), transparent 60%);
+    pointer-events: none;
+  }
+}
+
+// ── Panel header ──────────────────────────────────────────────
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: $font-display;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: $c-neon-bright;
+  text-shadow: 0 0 12px rgba(180,80,255,.5);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+
+  .header-ico {
+    width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
+    background: linear-gradient(180deg,rgba(120,60,220,.35),rgba(60,20,140,.35));
+    border: 1px solid rgba(190,140,255,.45);
+    display: grid; place-items: center; color: $c-neon-bright;
+    box-shadow: 0 0 14px rgba(176,115,255,.22);
+  }
+}
+
+// ── 2-column row ──────────────────────────────────────────────
+.row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+// ── Fields ────────────────────────────────────────────────────
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &.has-error input,
+  &.has-error .date-input,
+  &.has-error .native-select { border-color: $c-border-err; box-shadow: 0 0 10px rgba(210,70,255,.3); }
+  &.has-error .error-msg { display: block; }
+}
+
+.field-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.84rem;
+  letter-spacing: .03em;
+  color: $c-label;
+  font-weight: 500;
+
+  svg { color: $c-neon; flex-shrink: 0; }
+  .req { color: #ff7ae0; margin-left: 2px; }
+  .tooltip-icon {
+    width: 17px; height: 17px; border-radius: 50%;
+    border: 1px solid rgba(140,90,220,.4);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: .62rem; color: $c-text-muted; cursor: help; margin-left: 4px;
+  }
+}
+
+input[type="text"],
+input[type="number"] { @include input-base; }
+
+.error-msg {
+  font-size: .68rem; color: $c-border-err; display: none;
+  letter-spacing: .04em;
+}
+
+.char-limit-hint {
+  font-size: .62rem; color: $c-text-muted; font-weight: 400; margin-left: 2px;
+}
+
+.name-checking {
+  font-size: .68rem; color: $c-neon-dim; letter-spacing: .04em;
+  display: flex; align-items: center; gap: 5px;
+  &::before {
+    content: ''; display: inline-block;
+    width: 7px; height: 7px; border-radius: 50%;
+    border: 1.5px solid $c-neon-dim; border-top-color: transparent;
+    animation: spin .6s linear infinite;
+  }
+}
+
+.name-available {
+  font-size: .68rem; color: #5be08a; letter-spacing: .04em;
+  display: flex; align-items: center; gap: 5px;
+  &::before { content: '✓'; }
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+// ── Date input ────────────────────────────────────────────────
+.date-wrap { position: relative; }
+
+.date-input {
+  @include input-base;
+  padding-right: 52px;
+  color-scheme: dark;
+}
+
+.date-icon {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  width: 36px; height: 36px; border-radius: 8px;
+  border: 1px solid rgba(140,90,220,.25);
+  background: rgba(30,16,68,.6);
+  display: grid; place-items: center; color: $c-neon;
+  pointer-events: none;
+}
+
+// ── Coordinates ───────────────────────────────────────────────
+.coords-outer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.coords-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+
+.coord-field {
+  display: flex; flex-direction: column; gap: 5px;
+
+  .coord-label {
+    font-family: 'JetBrains Mono', $font-display, monospace;
+    font-size: .7rem; letter-spacing: .12em; color: $c-neon; font-weight: 600;
+  }
+  input { @include input-base; }
+
+  &.has-error input { border-color: $c-border-err; box-shadow: 0 0 8px rgba(210,70,255,.25); }
+  .error-msg { display: block; font-size: .6rem; }
+}
+
+.locate-wrap { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+
+.locate-btn {
+  width: 46px; height: 46px; border-radius: 12px;
+  background: linear-gradient(180deg, rgba(120,60,220,.35), rgba(60,20,140,.45));
+  border: 1px solid rgba(190,140,255,.45);
+  display: grid; place-items: center; color: $c-neon-bright;
+  cursor: pointer; box-shadow: 0 0 14px rgba(150,55,240,.22);
+  transition: box-shadow $t, border-color $t;
+  &:hover { box-shadow: 0 0 22px rgba(150,55,240,.5); border-color: $c-neon; }
+}
+
+.locate-cap {
+  font-size: .6rem; color: $c-text-muted;
+  text-align: center; letter-spacing: .04em; white-space: nowrap;
+}
+
+// ── Select (native) ───────────────────────────────────────────
+.select-wrap {
+  position: relative;
+  &::after {
+    content: ''; position: absolute; right: 14px; top: 50%;
+    width: 8px; height: 8px;
+    border-right: 2px solid $c-neon; border-bottom: 2px solid $c-neon;
+    transform: translateY(-70%) rotate(45deg); pointer-events: none;
+  }
+}
+
+.native-select {
+  @include input-base;
+  cursor: pointer; padding-right: 42px;
+  option { background: #0e0628; color: $c-text; }
+}
+
+// ── Textarea ──────────────────────────────────────────────────
+.textarea-wrap { position: relative; }
+
+textarea {
+  @include input-base;
+  min-height: 110px; resize: none;
+  padding-bottom: 28px; line-height: 1.55;
+}
+
+.char-count {
+  position: absolute; right: 12px; bottom: 10px;
+  font-size: .68rem; color: $c-text-muted;
+  font-family: monospace; pointer-events: none;
+}
+
+// ── Subcard ───────────────────────────────────────────────────
+.subcard {
+  border: 1px solid rgba(140,90,220,.22);
+  background: $c-bg-sub;
+  border-radius: $radius;
+  padding: 18px;
+  display: flex; flex-direction: column; gap: 14px;
+}
+
+.subcard-header {
+  display: flex; align-items: center; gap: 10px;
+  font-size: .84rem; letter-spacing: .04em;
+  color: $c-neon-bright; font-weight: 600;
+  svg { color: $c-neon; }
+  .req { color: #ff7ae0; margin-left: 2px; }
+}
+
+.has-error-select {
+  border-color: $c-border-err !important;
+  box-shadow: 0 0 10px rgba(210,70,255,.3) !important;
+}
+
+// ── Planet design ─────────────────────────────────────────────
+.design-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.planet-preview-box {
+  aspect-ratio: 1 / 1;
+  border-radius: $radius-sm;
+  background: radial-gradient(circle at 50% 50%, rgba(40,15,90,.6), transparent 70%), #07041a;
+  position: relative; overflow: hidden;
+  display: grid; place-items: center;
+  border: 1px solid rgba(140,90,220,.18);
+}
+
+.preview-label {
+  position: absolute; top: 10px; left: 12px;
+  font-size: .72rem; color: $c-text-muted; font-weight: 500;
+}
+
+.planet-sphere {
+  width: 76%; aspect-ratio: 1 / 1; border-radius: 50%;
+  box-shadow:
+    inset -18px -22px 50px rgba(0,0,0,.65),
+    0 0 50px rgba(160,90,255,.4),
+    0 0 100px rgba(120,40,200,.2);
+  position: relative;
+
+  &::before {
+    content: ''; position: absolute; inset: 0; border-radius: 50%;
+    background-image:
+      linear-gradient(60deg,  transparent 49%, rgba(255,255,255,.07) 50%, transparent 51%),
+      linear-gradient(-60deg, transparent 49%, rgba(255,255,255,.05) 50%, transparent 51%);
+    background-size: 18px 32px, 18px 32px;
+    mix-blend-mode: overlay; opacity: .7;
+  }
+
+  &::after {
+    content: ''; position: absolute; left: 10%; top: 12%; width: 32%; height: 22%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.35), transparent 60%);
+    filter: blur(2px);
+  }
+}
+
+// ── Color pickers ─────────────────────────────────────────────
+.color-stack {
+  display: flex; flex-direction: column; gap: 8px; justify-content: center;
+}
+
+.color-section-label {
+  font-size: .75rem; color: $c-label; letter-spacing: .04em; font-weight: 500;
+  .req { color: #ff7ae0; }
+}
+
+.color-pick {
+  display: flex; align-items: center; gap: 10px;
+  background: $c-bg-input; border: 1px solid rgba(140,90,220,.22);
+  border-radius: $radius-sm; padding: 9px 12px;
+  position: relative;
+  transition: border-color $t, box-shadow $t;
+  &:hover { border-color: $c-neon; }
+  &.has-error { border-color: $c-border-err; box-shadow: 0 0 10px rgba(210,70,255,.3); }
+}
+
+.swatch {
+  width: 28px; height: 28px; border-radius: 7px; flex-shrink: 0;
+  box-shadow: 0 0 10px rgba(176,115,255,.3);
+  cursor: pointer; transition: box-shadow $t;
+  &:hover { box-shadow: 0 0 16px rgba(176,115,255,.55); }
+}
+
+.color-text-input {
+  flex: 1; min-width: 0;
+  background: transparent; border: none; outline: none;
+  color: $c-text; font-size: .84rem; font-weight: 600;
+  font-family: 'JetBrains Mono', monospace; letter-spacing: .08em;
+  padding: 0;
+  &::placeholder { color: $c-text-muted; }
+}
+
+.chev {
+  width: 7px; height: 7px; flex-shrink: 0; cursor: pointer;
+  border-right: 2px solid $c-neon; border-bottom: 2px solid $c-neon;
+  transform: rotate(45deg) translateY(-1px);
+}
+
+.hidden-color {
+  position: absolute; width: 0; height: 0;
+  opacity: 0; pointer-events: none; border: none; padding: 0;
+}
+
+.color-error-msg {
+  font-size: .65rem; color: $c-border-err;
+  letter-spacing: .04em; margin-top: -4px;
+}
+
+// ── State list ────────────────────────────────────────────────
+.state-list { display: flex; flex-direction: column; gap: 10px; }
+
+.state-row { display: flex; align-items: center; gap: 12px; }
+
+.state-icon {
+  width: 32px; height: 32px; flex-shrink: 0;
+  border-radius: 8px;
+  background: rgba(30,16,68,.6);
+  border: 1px solid rgba(140,90,220,.22);
+  display: grid; place-items: center; color: $c-neon;
+}
+
+.state-title { font-size: .84rem; color: $c-text;       font-weight: 600; line-height: 1.2; }
+.state-desc  { font-size: .72rem; color: $c-text-muted; margin-top: 1px; }
+
+// ── Responsive ────────────────────────────────────────────────
+@media (max-width: 700px) {
+  .row-2        { grid-template-columns: 1fr; }
+  .design-grid  { grid-template-columns: 1fr; }
+  .coords-outer { grid-template-columns: 1fr; }
+  .coords-row   { grid-template-columns: 1fr; }
+}

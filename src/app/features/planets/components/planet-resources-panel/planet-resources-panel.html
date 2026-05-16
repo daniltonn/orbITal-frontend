@@ -1,0 +1,370 @@
+<div class="panel" [formGroup]="form">
+
+  <!-- ── HEADER ─────────────────────────────────────────────── -->
+  <div class="panel-header">
+    <span class="header-ico">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M21 8.5l-9-5-9 5 9 5 9-5z"/><path d="M3 8.5V16l9 5 9-5V8.5"/><path d="M12 13.5V21"/>
+      </svg>
+    </span>
+    <span>EVALUACIÓN DE RECURSOS</span>
+  </div>
+
+  <!-- ── ATMÓSFERA + NIVEL TECNOLÓGICO ─────────────────────── -->
+  <div class="row-2-panels">
+
+    <!-- Atmósfera -->
+    <div class="sub-panel" [class.sub-panel-error]="form.get('atmosphere')?.invalid && form.get('atmosphere')?.touched">
+      <div class="sub-header">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M4 20c4-4 8-4 12-4s4-4 4-4M4 14c4-4 8-4 12-4s4-4 4-4"/>
+        </svg>
+        Atmósfera <span class="req">*</span>
+      </div>
+      <div class="atm-scroll">
+        @for (a of atmosferaOptions; track a.id_Atmosfera) {
+          <div class="atm-item">
+            <div class="atm-badge">{{ atmAcronym(a.nombre) }}</div>
+            <div class="atm-info">
+              <span class="atm-name">{{ a.nombre }}</span>
+              @if (a.descripcion) {
+                <span class="atm-desc">{{ a.descripcion }}</span>
+              }
+            </div>
+            <button type="button" class="atm-check"
+                    [class.selected]="form.get('atmosphere')?.value === a.id_Atmosfera"
+                    (click)="toggleAtmosphere(a.id_Atmosfera)" aria-label="Seleccionar atmósfera">
+              @if (form.get('atmosphere')?.value === a.id_Atmosfera) {
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              }
+            </button>
+          </div>
+        }
+      </div>
+      @if (form.get('atmosphere')?.invalid && form.get('atmosphere')?.touched) {
+        <span class="req-error">Selección requerida</span>
+      }
+    </div>
+
+    <!-- Nivel tecnológico -->
+    <div class="sub-panel" [class.sub-panel-error]="form.get('techLevel')?.invalid && form.get('techLevel')?.touched">
+      <div class="sub-header">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/>
+        </svg>
+        Nivel tecnológico <span class="req">*</span>
+      </div>
+      <div class="tech-list">
+
+        <div class="tech-item"
+             [class.selected]="form.get('techLevel')?.value === 'primitive'"
+             (click)="selectTech('primitive')">
+          <span class="radio-dot" [class.active]="form.get('techLevel')?.value === 'primitive'"></span>
+          <span class="tech-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M3 20l4-10 5 4 4-8 5 14z"/>
+            </svg>
+          </span>
+          <span class="tech-name">Primitivo</span>
+        </div>
+
+        <div class="tech-item"
+             [class.selected]="form.get('techLevel')?.value === 'medieval'"
+             (click)="selectTech('medieval')">
+          <span class="radio-dot" [class.active]="form.get('techLevel')?.value === 'medieval'"></span>
+          <span class="tech-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M4 21V10l4-3v14M16 21V7l4 3v11M10 21V13l4-3v11"/>
+            </svg>
+          </span>
+          <span class="tech-name">Medieval</span>
+        </div>
+
+        <div class="tech-item"
+             [class.selected]="form.get('techLevel')?.value === 'advanced'"
+             (click)="selectTech('advanced')">
+          <span class="radio-dot" [class.active]="form.get('techLevel')?.value === 'advanced'"></span>
+          <span class="tech-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M3 21V8l5-4 5 4v13M13 21V12l4-3 4 3v9"/><path d="M3 13h10M13 13h8"/>
+            </svg>
+          </span>
+          <span class="tech-name">Avanzado</span>
+        </div>
+
+        <div class="tech-item"
+             [class.selected]="form.get('techLevel')?.value === 'interstellar'"
+             (click)="selectTech('interstellar')">
+          <span class="radio-dot" [class.active]="form.get('techLevel')?.value === 'interstellar'"></span>
+          <span class="tech-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M12 2c1.5 3 4.5 4.5 4.5 8.5a4.5 4.5 0 0 1-9 0C7.5 6.5 10.5 5 12 2z"/>
+              <path d="M8 20h8M12 17v3"/>
+            </svg>
+          </span>
+          <span class="tech-name">Interestelar</span>
+        </div>
+
+      </div>
+      @if (form.get('techLevel')?.invalid && form.get('techLevel')?.touched) {
+        <span class="req-error">Selección requerida</span>
+      }
+    </div>
+
+  </div>
+
+  <!-- ── RECURSOS PRIMARIOS ─────────────────────────────────── -->
+  <section class="section">
+    <div class="section-header">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+      Recursos primarios
+    </div>
+
+    @if (resourcesArray.length > 0) {
+      <div class="resource-list" formArrayName="resources">
+        @for (r of resourcesArray.controls; track $index; let i = $index) {
+          <div class="resource-card" [formGroupName]="i">
+
+            <!-- ── SELECT MODE ─────────────────────────────────── -->
+            @if (resourceModes[i] === 'select') {
+              <div class="resource-row">
+                <div class="select-wrap resource-select-wrap">
+                  <select class="native-select resource-select" formControlName="idRecurso">
+                    <option [ngValue]="null">Seleccionar recurso…</option>
+                    @for (c of recursoOptions; track c.id_Recurso) {
+                      <option [ngValue]="c.id_Recurso">{{ c.nombre }} — {{ c.unidad_Medida }}</option>
+                    }
+                  </select>
+                </div>
+                @if (getSelectedUnit(i)) {
+                  <span class="unit-badge">{{ getSelectedUnit(i) }}</span>
+                }
+                <input type="number" formControlName="quantity" class="qty-input" placeholder="Cantidad *"
+                       [class.input-error]="resourcesArray.at(i).get('quantity')?.invalid && resourcesArray.at(i).get('quantity')?.touched" />
+                <button type="button" class="remove-btn" (click)="removeResource(i)" aria-label="Eliminar recurso">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                  </svg>
+                </button>
+              </div>
+              <button type="button" class="btn-create-new" (click)="setNewMode(i)">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                Crear nuevo recurso
+              </button>
+            }
+
+            <!-- ── NEW MODE ────────────────────────────────────── -->
+            @if (resourceModes[i] === 'new') {
+
+              @if (resourceSaved[i]) {
+                <!-- Estado guardado -->
+                <div class="resource-saved-card">
+                  <span class="saved-icon">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  </span>
+                  <div class="saved-info">
+                    <span class="saved-name">{{ resourcesArray.at(i).get('name')?.value }}</span>
+                    <span class="saved-meta">{{ resourcesArray.at(i).get('tipo')?.value }} · {{ resourcesArray.at(i).get('rareza')?.value }}</span>
+                  </div>
+                  <div class="saved-qty-wrap">
+                    <input type="number" formControlName="quantity" class="saved-qty" placeholder="Cantidad *"
+                         [class.input-error]="resourcesArray.at(i).get('quantity')?.invalid && resourcesArray.at(i).get('quantity')?.touched" />
+                  </div>
+                  <button type="button" class="remove-btn" (click)="removeResource(i)" aria-label="Eliminar recurso">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                  </button>
+                </div>
+              } @else {
+                <!-- Estado edición -->
+                <!-- Fila 1: nombre, tipo, rareza, × -->
+                <div class="resource-row">
+                  <input type="text" formControlName="name" placeholder="Nombre *" />
+                  <div class="rareza-wrap rareza-wrap--tipo">
+                    <select formControlName="tipo" class="rareza-select">
+                      <option value="">Tipo *</option>
+                      <option>Mineral</option>
+                      <option>Energético</option>
+                      <option>Biológico</option>
+                      <option>Tecnológico</option>
+                      <option>Hídrico</option>
+                      <option>Otro</option>
+                    </select>
+                  </div>
+                  <div class="rareza-wrap">
+                    <select formControlName="rareza" class="rareza-select">
+                      <option value="">Rareza *</option>
+                      <option>Común</option>
+                      <option>Poco común</option>
+                      <option>Raro</option>
+                      <option>Muy raro</option>
+                      <option>Único</option>
+                    </select>
+                  </div>
+                  <button type="button" class="remove-btn" (click)="removeResource(i)" aria-label="Eliminar recurso">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                  </button>
+                </div>
+                <!-- Fila 2: descripcion -->
+                <input type="text" formControlName="descripcion" class="desc-input" placeholder="Descripción (opcional)" />
+                <!-- Fila 3: unidad, cantidad, botón + -->
+                <div class="resource-row">
+                  <div class="rareza-wrap rareza-wrap--unit">
+                    <select formControlName="unit" class="rareza-select">
+                      <option value="">Unidad *</option>
+                      <option>kg</option>
+                      <option>ton</option>
+                      <option>L</option>
+                      <option>m³</option>
+                      <option>unidades</option>
+                      <option>GJ</option>
+                      <option>mol</option>
+                    </select>
+                  </div>
+                  <input type="number" formControlName="quantity" class="qty-input" placeholder="Cantidad *"
+                         [class.input-error]="resourcesArray.at(i).get('quantity')?.invalid && resourcesArray.at(i).get('quantity')?.touched" />
+                  <button type="button" class="btn-save-resource"
+                          [class.saving]="savingResource[i]"
+                          [disabled]="savingResource[i]"
+                          (click)="saveNewResource(i)"
+                          title="Guardar recurso en catálogo">
+                    @if (!savingResource[i]) {
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8">
+                        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                      </svg>
+                    } @else {
+                      …
+                    }
+                  </button>
+                </div>
+                @if (resourceSaveErr[i]) {
+                  <span class="save-err">{{ resourceSaveErr[i] }}</span>
+                }
+                <button type="button" class="btn-cancel-new" (click)="setSelectMode(i)">
+                  Volver al catálogo
+                </button>
+              }
+
+            }
+
+          </div>
+        }
+      </div>
+    }
+
+    <div class="add-resource-box" (click)="addResource()" role="button" tabindex="0"
+         (keydown.enter)="addResource()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      <span class="add-label">Añadir recurso</span>
+      <span class="add-hint">Haz clic para agregar un recurso</span>
+    </div>
+
+    @if (resourcesArray.length === 0) {
+      <p class="empty-msg">Aún no se han agregado recursos.</p>
+    }
+  </section>
+
+  <!-- ── NIVEL DE VIDA PLANETARIA ──────────────────────────── -->
+  <section class="section">
+    <div class="section-header">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="2 12 6 12 8 5 12 19 16 8 18 12 22 12"/>
+      </svg>
+      Nivel de vida planetaria <span class="req">*</span>
+    </div>
+    <div class="life-grid">
+
+      <button type="button" class="life-card life-low"
+              [class.selected]="form.get('lifeLevel')?.value === 'low'"
+              (click)="selectLifeLevel('low')">
+        <div class="life-hex">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M12 22c-4-3-6-7-6-11 0-3 2-6 6-9 4 3 6 6 6 9 0 4-2 8-6 11z"/>
+          </svg>
+        </div>
+        <span class="life-label">Bajo</span>
+        <span class="life-ring" [class.active]="form.get('lifeLevel')?.value === 'low'"></span>
+      </button>
+
+      <button type="button" class="life-card life-medium"
+              [class.selected]="form.get('lifeLevel')?.value === 'medium'"
+              (click)="selectLifeLevel('medium')">
+        <div class="life-hex">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M12 2l2.5 5 5.5.8-4 4 1 5.5L12 14.8 7 17.3l1-5.5-4-4L9.5 7z"/>
+          </svg>
+        </div>
+        <span class="life-label">Medio</span>
+        <span class="life-ring" [class.active]="form.get('lifeLevel')?.value === 'medium'"></span>
+      </button>
+
+      <button type="button" class="life-card life-high"
+              [class.selected]="form.get('lifeLevel')?.value === 'high'"
+              (click)="selectLifeLevel('high')">
+        <div class="life-hex">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/>
+          </svg>
+        </div>
+        <span class="life-label">Alto</span>
+        <span class="life-ring" [class.active]="form.get('lifeLevel')?.value === 'high'"></span>
+      </button>
+
+      <button type="button" class="life-card life-advanced"
+              [class.selected]="form.get('lifeLevel')?.value === 'advanced'"
+              (click)="selectLifeLevel('advanced')">
+        <div class="life-hex">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M12 2c2 4 6 6 6 11a6 6 0 1 1-12 0c0-5 4-7 6-11z"/>
+          </svg>
+        </div>
+        <span class="life-label">Avanzado</span>
+        <span class="life-ring" [class.active]="form.get('lifeLevel')?.value === 'advanced'"></span>
+      </button>
+
+      <button type="button" class="life-card life-primitive"
+              [class.selected]="form.get('lifeLevel')?.value === 'primitive'"
+              (click)="selectLifeLevel('primitive')">
+        <div class="life-hex">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/>
+          </svg>
+        </div>
+        <span class="life-label">Primitivo</span>
+        <span class="life-ring" [class.active]="form.get('lifeLevel')?.value === 'primitive'"></span>
+      </button>
+
+    </div>
+    @if (form.get('lifeLevel')?.invalid && form.get('lifeLevel')?.touched) {
+      <span class="req-error">Selección requerida</span>
+    }
+  </section>
+
+  <!-- ── BOTÓN REGISTRAR ────────────────────────────────────── -->
+  <button type="submit" class="btn-register">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+      <ellipse cx="12" cy="12" rx="6" ry="6"/><ellipse cx="12" cy="12" rx="10" ry="3" transform="rotate(-20 12 12)"/>
+    </svg>
+    <span>
+      <strong>Registrar planeta</strong>
+      <small>Guardar y añadir al mapa galáctico</small>
+    </span>
+  </button>
+
+</div>

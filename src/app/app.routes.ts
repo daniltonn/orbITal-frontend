@@ -5,7 +5,7 @@
 
 import { Routes } from '@angular/router';
 import { RegistroUsuario } from './pages/registro-usuario/registro-usuario/registro-usuario';
-import { RegistrarPlaneta } from './pages/planetas/registrar/registrar';
+import { CreatePlanet } from './features/planets/pages/create-planet/create-planet';
 import { ListarComponent } from './pages/planetas/listar/listar';
 import { RegistrarEquipoComponent } from './pages/equipos/registrar/registrar';
 import { AsignarMision } from './pages/misiones/asignar/asignar';
@@ -27,7 +27,7 @@ export const routes: Routes = [
   {path: 'usuarios', component: ListarUsuariosComponent},
 
   // Registrar planeta
-  { path: 'planetas/registrar', component: RegistrarPlaneta },
+  { path: 'planetas/registrar', component: CreatePlanet },
 
   // Listar planetas
   { path: 'planetas', component: ListarComponent },
